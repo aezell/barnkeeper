@@ -27,8 +27,8 @@ defmodule Barnkeeper.Horses do
   Creates a horse for a team.
   """
   def create_horse(team_id, attrs \\ %{}) do
-    attrs = Map.put(attrs, :team_id, team_id)
-    
+    attrs = Map.put(attrs, "team_id", team_id)
+
     %Horse{}
     |> Horse.changeset(attrs)
     |> Repo.insert()
@@ -72,7 +72,7 @@ defmodule Barnkeeper.Horses do
   """
   def search_horses(team_id, search_term) do
     search_term = "%#{search_term}%"
-    
+
     from(h in Horse,
       where: h.team_id == ^team_id and ilike(h.name, ^search_term),
       order_by: h.name

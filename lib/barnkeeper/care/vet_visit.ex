@@ -10,9 +10,6 @@ defmodule Barnkeeper.Care.VetVisit do
 
   @visit_types [:routine, :emergency, :dental, :reproductive, :surgery, :other]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-
   schema "vet_visits" do
     field :visit_type, Ecto.Enum, values: @visit_types
     field :visit_date, :date
@@ -34,10 +31,27 @@ defmodule Barnkeeper.Care.VetVisit do
   @doc false
   def changeset(vet_visit, attrs) do
     vet_visit
-    |> cast(attrs, [:visit_type, :visit_date, :veterinarian_name, :veterinarian_phone,
-                    :diagnosis, :treatment, :medications, :follow_up_date, :cost,
-                    :notes, :horse_id, :recorded_by_id])
-    |> validate_required([:visit_type, :visit_date, :veterinarian_name, :horse_id, :recorded_by_id])
+    |> cast(attrs, [
+      :visit_type,
+      :visit_date,
+      :veterinarian_name,
+      :veterinarian_phone,
+      :diagnosis,
+      :treatment,
+      :medications,
+      :follow_up_date,
+      :cost,
+      :notes,
+      :horse_id,
+      :recorded_by_id
+    ])
+    |> validate_required([
+      :visit_type,
+      :visit_date,
+      :veterinarian_name,
+      :horse_id,
+      :recorded_by_id
+    ])
     |> validate_inclusion(:visit_type, @visit_types)
     |> validate_length(:veterinarian_name, min: 1, max: 100)
     |> validate_length(:veterinarian_phone, max: 20)

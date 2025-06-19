@@ -10,9 +10,6 @@ defmodule Barnkeeper.Facilities.Location do
 
   @location_types [:stall, :paddock, :pasture, :arena, :round_pen, :wash_rack, :other]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-
   schema "locations" do
     field :name, :string
     field :location_type, Ecto.Enum, values: @location_types
@@ -34,8 +31,19 @@ defmodule Barnkeeper.Facilities.Location do
   @doc false
   def changeset(location, attrs) do
     location
-    |> cast(attrs, [:name, :location_type, :description, :capacity, :size_sqft,
-                    :has_water, :has_electricity, :has_shelter, :notes, :active, :team_id])
+    |> cast(attrs, [
+      :name,
+      :location_type,
+      :description,
+      :capacity,
+      :size_sqft,
+      :has_water,
+      :has_electricity,
+      :has_shelter,
+      :notes,
+      :active,
+      :team_id
+    ])
     |> validate_required([:name, :location_type, :team_id])
     |> validate_length(:name, min: 1, max: 100)
     |> validate_inclusion(:location_type, @location_types)
@@ -57,6 +65,7 @@ defmodule Barnkeeper.Facilities.Location do
   def occupied?(%__MODULE__{horses: horses}) when is_list(horses) do
     length(horses) > 0
   end
+
   def occupied?(_), do: false
 
   @doc """
@@ -65,5 +74,6 @@ defmodule Barnkeeper.Facilities.Location do
   def available_capacity(%__MODULE__{capacity: capacity, horses: horses}) when is_list(horses) do
     capacity - length(horses)
   end
+
   def available_capacity(%__MODULE__{capacity: capacity}), do: capacity
 end

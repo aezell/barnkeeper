@@ -1,0 +1,290 @@
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
+    <div class="mb-4 sm:mb-0">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
+      <p class="text-sm sm:text-base text-gray-600">Welcome back to {@team.name}</p>
+    </div>
+    <div class="w-full sm:w-auto">
+      <.link navigate={~p"/horses/new"} class="btn btn-primary w-full sm:w-auto">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 sm:h-5 sm:w-5 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          />
+        </svg>
+        Add Horse
+      </.link>
+    </div>
+  </div>
+  
+<!-- Stats Cards -->
+  <div class="stats stats-vertical lg:stats-horizontal shadow mb-8">
+    <div class="stat">
+      <div class="stat-figure text-primary">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+          />
+        </svg>
+      </div>
+      <div class="stat-title">Total Horses</div>
+      <div class="stat-value text-primary">{@horse_count}</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-figure text-secondary">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+          />
+        </svg>
+      </div>
+      <div class="stat-title">This Week</div>
+      <div class="stat-value text-secondary">0</div>
+      <div class="stat-desc">Activities</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-figure text-accent">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+      <div class="stat-title">Upcoming</div>
+      <div class="stat-value text-accent">0</div>
+      <div class="stat-desc">Appointments</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-figure text-info">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+          />
+        </svg>
+      </div>
+      <div class="stat-title">Team</div>
+      <div class="stat-value text-info">1</div>
+      <div class="stat-desc">Members</div>
+    </div>
+  </div>
+  
+<!-- Main Content -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+    <!-- Horses Section -->
+    <div class="lg:col-span-2">
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="card-title">Your Horses</h2>
+            <.link navigate={~p"/horses"} class="link link-primary">
+              View All →
+            </.link>
+          </div>
+
+          <%= if @horse_count > 0 do %>
+            <div class="space-y-3 sm:space-y-4">
+              <%= for horse <- Enum.take(@horses, 5) do %>
+                <div class="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 border border-base-300 rounded-lg hover:bg-base-200 transition-colors">
+                  <div class="avatar placeholder flex-shrink-0">
+                    <div class="bg-neutral text-neutral-content rounded-full w-10 sm:w-12">
+                      <span class="text-xs sm:text-sm">{String.first(horse.name)}</span>
+                    </div>
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h3 class="font-medium text-sm sm:text-base truncate">{horse.name}</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 truncate">
+                      {horse.breed} • {horse.color}
+                    </p>
+                  </div>
+                  <div class="flex items-center space-x-2 flex-shrink-0">
+                    <.link
+                      navigate={~p"/horses/#{horse.id}"}
+                      class="btn btn-xs sm:btn-sm btn-ghost"
+                    >
+                      View
+                    </.link>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-8">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-16 w-16 mx-auto text-gray-400 mb-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+              <h3 class="text-lg font-medium text-gray-900 mb-2">No horses yet</h3>
+              <p class="text-gray-500 mb-4">Get started by adding your first horse</p>
+              <.link navigate={~p"/horses/new"} class="btn btn-primary">
+                Add Your First Horse
+              </.link>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+<!-- Recent Activity -->
+    <div class="lg:col-span-1">
+      <div class="card bg-base-100 shadow-lg">
+        <div class="card-body">
+          <h2 class="card-title mb-4">Recent Activity</h2>
+
+          <%= if length(@recent_activities) > 0 do %>
+            <div class="space-y-3">
+              <%= for activity <- @recent_activities do %>
+                <div class="flex items-start space-x-3">
+                  <div class="flex-shrink-0">
+                    <div class="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium">{activity.type}</p>
+                    <p class="text-xs text-gray-500">{activity.created_at}</p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center py-6">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-12 w-12 mx-auto text-gray-400 mb-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+              <p class="text-sm text-gray-500">No recent activity</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+<!-- Quick Actions -->
+      <div class="card bg-base-100 shadow-lg mt-6">
+        <div class="card-body">
+          <h2 class="card-title mb-4">Quick Actions</h2>
+          <div class="space-y-2">
+            <.link
+              navigate={~p"/horses/new"}
+              class="btn btn-sm btn-outline btn-block justify-start"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
+              Add Horse
+            </.link>
+            <button class="btn btn-sm btn-outline btn-block justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Schedule Visit
+            </button>
+            <button class="btn btn-sm btn-outline btn-block justify-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+              Add Note
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

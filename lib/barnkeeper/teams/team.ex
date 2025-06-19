@@ -10,9 +10,6 @@ defmodule Barnkeeper.Teams.Team do
   alias Barnkeeper.Horses.Horse
   alias Barnkeeper.Facilities.Location
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-
   schema "teams" do
     field :name, :string
     field :description, :string
@@ -36,8 +33,18 @@ defmodule Barnkeeper.Teams.Team do
   @doc false
   def changeset(team, attrs) do
     team
-    |> cast(attrs, [:name, :description, :address, :city, :state, :zip_code, 
-                    :phone, :email, :website, :active])
+    |> cast(attrs, [
+      :name,
+      :description,
+      :address,
+      :city,
+      :state,
+      :zip_code,
+      :phone,
+      :email,
+      :website,
+      :active
+    ])
     |> validate_required([:name])
     |> validate_length(:name, min: 1, max: 100)
     |> validate_length(:description, max: 500)

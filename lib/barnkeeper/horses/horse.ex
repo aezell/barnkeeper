@@ -14,9 +14,6 @@ defmodule Barnkeeper.Horses.Horse do
 
   @sizes [:pony, :horse, :draft]
   @genders [:mare, :gelding, :stallion, :filly, :colt]
-  
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
 
   schema "horses" do
     field :name, :string
@@ -53,11 +50,26 @@ defmodule Barnkeeper.Horses.Horse do
   @doc false
   def changeset(horse, attrs) do
     horse
-    |> cast(attrs, [:name, :breed, :color, :size, :gender, :birth_date,
-                    :height_hands, :weight_lbs, :microchip_number,
-                    :registration_number, :passport_number, :insurance_company,
-                    :insurance_policy, :purchase_date, :purchase_price,
-                    :active, :team_id, :location_id])
+    |> cast(attrs, [
+      :name,
+      :breed,
+      :color,
+      :size,
+      :gender,
+      :birth_date,
+      :height_hands,
+      :weight_lbs,
+      :microchip_number,
+      :registration_number,
+      :passport_number,
+      :insurance_company,
+      :insurance_policy,
+      :purchase_date,
+      :purchase_price,
+      :active,
+      :team_id,
+      :location_id
+    ])
     |> validate_required([:name, :team_id])
     |> validate_length(:name, min: 1, max: 100)
     |> validate_length(:breed, max: 50)
@@ -74,7 +86,6 @@ defmodule Barnkeeper.Horses.Horse do
     |> validate_number(:purchase_price, greater_than_or_equal_to: 0)
     |> foreign_key_constraint(:team_id)
     |> foreign_key_constraint(:location_id)
-    |> unique_constraint([:name, :team_id], name: :horses_name_team_id_index)
   end
 
   @doc """
@@ -91,6 +102,7 @@ defmodule Barnkeeper.Horses.Horse do
   Calculates the horse's age in years.
   """
   def age(%__MODULE__{birth_date: nil}), do: nil
+
   def age(%__MODULE__{birth_date: birth_date}) do
     today = Date.utc_today()
     Date.diff(today, birth_date) |> div(365)
@@ -100,9 +112,10 @@ defmodule Barnkeeper.Horses.Horse do
   Returns a formatted height string.
   """
   def formatted_height(%__MODULE__{height_hands: nil}), do: nil
+
   def formatted_height(%__MODULE__{height_hands: height}) do
     hands = Decimal.to_integer(Decimal.round(height, 0))
-    inches = Decimal.to_float(Decimal.rem(height, 1)) * 4 |> round()
+    inches = (Decimal.to_float(Decimal.rem(height, 1)) * 4) |> round()
     "#{hands}.#{inches} hands"
   end
 end

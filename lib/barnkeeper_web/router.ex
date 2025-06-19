@@ -66,6 +66,57 @@ defmodule BarnkeeperWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{BarnkeeperWeb.UserAuth, :ensure_authenticated}] do
+      # Main application routes
+      live "/dashboard", DashboardLive, :index
+      live "/horses", HorseLive.Index, :index
+      live "/horses/new", HorseLive.Index, :new
+      live "/horses/:id/edit", HorseLive.Index, :edit
+      live "/horses/:id", HorseLive.Show, :show
+      live "/horses/:id/show/edit", HorseLive.Show, :edit
+      live "/horses/:id/photos/upload", HorseLive.Show, :upload_photos
+
+      # Vet visits
+      live "/vet_visits", VetVisitLive.Index, :index
+      live "/vet_visits/new", VetVisitLive.Index, :new
+      live "/vet_visits/:id/edit", VetVisitLive.Index, :edit
+      live "/vet_visits/:id", VetVisitLive.Show, :show
+      live "/vet_visits/:id/show/edit", VetVisitLive.Show, :edit
+
+      # Farrier visits
+      live "/farrier_visits", FarrierVisitLive.Index, :index
+      live "/farrier_visits/new", FarrierVisitLive.Index, :new
+      live "/farrier_visits/:id/edit", FarrierVisitLive.Index, :edit
+      live "/farrier_visits/:id", FarrierVisitLive.Show, :show
+      live "/farrier_visits/:id/show/edit", FarrierVisitLive.Show, :edit
+
+      # Vaccinations
+      live "/vaccinations", VaccinationLive.Index, :index
+      live "/vaccinations/new", VaccinationLive.Index, :new
+      live "/vaccinations/:id/edit", VaccinationLive.Index, :edit
+      live "/vaccinations/:id", VaccinationLive.Show, :show
+      live "/vaccinations/:id/show/edit", VaccinationLive.Show, :edit
+
+      # Notes
+      live "/notes", NoteLive.Index, :index
+      live "/notes/new", NoteLive.Index, :new
+      live "/notes/:id/edit", NoteLive.Index, :edit
+      live "/notes/:id", NoteLive.Show, :show
+      live "/notes/:id/show/edit", NoteLive.Show, :edit
+
+      # Feedings
+      live "/feedings", FeedingLive.Index, :index
+      live "/feedings/new", FeedingLive.Index, :new
+      live "/feedings/:id/edit", FeedingLive.Index, :edit
+      live "/feedings/:id", FeedingLive.Show, :show
+      live "/feedings/:id/show/edit", FeedingLive.Show, :edit
+
+      # Calendar
+      live "/calendar", CalendarLive, :index
+
+      # Team setup
+      live "/team/setup", TeamSetupLive, :index
+
+      # User settings
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end

@@ -10,9 +10,6 @@ defmodule Barnkeeper.Care.Feeding do
 
   @feed_types [:hay, :grain, :pellets, :supplements, :treats, :other]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-
   schema "feedings" do
     field :feed_type, Ecto.Enum, values: @feed_types
     field :feed_name, :string
@@ -30,7 +27,16 @@ defmodule Barnkeeper.Care.Feeding do
   @doc false
   def changeset(feeding, attrs) do
     feeding
-    |> cast(attrs, [:feed_type, :feed_name, :amount, :unit, :fed_at, :notes, :horse_id, :fed_by_id])
+    |> cast(attrs, [
+      :feed_type,
+      :feed_name,
+      :amount,
+      :unit,
+      :fed_at,
+      :notes,
+      :horse_id,
+      :fed_by_id
+    ])
     |> validate_required([:feed_type, :feed_name, :amount, :unit, :fed_at, :horse_id, :fed_by_id])
     |> validate_inclusion(:feed_type, @feed_types)
     |> validate_length(:feed_name, min: 1, max: 100)

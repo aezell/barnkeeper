@@ -10,9 +10,6 @@ defmodule Barnkeeper.Care.FarrierVisit do
 
   @service_types [:trim, :shoes_all, :shoes_front, :shoes_hind, :corrective, :therapeutic, :other]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-
   schema "farrier_visits" do
     field :service_type, Ecto.Enum, values: @service_types
     field :visit_date, :date
@@ -33,9 +30,19 @@ defmodule Barnkeeper.Care.FarrierVisit do
   @doc false
   def changeset(farrier_visit, attrs) do
     farrier_visit
-    |> cast(attrs, [:service_type, :visit_date, :farrier_name, :farrier_phone,
-                    :services_performed, :observations, :next_visit_date, :cost,
-                    :notes, :horse_id, :recorded_by_id])
+    |> cast(attrs, [
+      :service_type,
+      :visit_date,
+      :farrier_name,
+      :farrier_phone,
+      :services_performed,
+      :observations,
+      :next_visit_date,
+      :cost,
+      :notes,
+      :horse_id,
+      :recorded_by_id
+    ])
     |> validate_required([:service_type, :visit_date, :farrier_name, :horse_id, :recorded_by_id])
     |> validate_inclusion(:service_type, @service_types)
     |> validate_length(:farrier_name, min: 1, max: 100)

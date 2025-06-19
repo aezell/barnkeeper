@@ -1,0 +1,236 @@
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+  <div class="card bg-base-100 shadow-lg">
+    <!-- Calendar Header -->
+    <div class="card-body p-4 sm:p-6">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <h1 class="card-title text-2xl sm:text-3xl">Calendar</h1>
+          
+<!-- View Type Selector -->
+          <div class="btn-group">
+            <button
+              type="button"
+              phx-click="change_view"
+              phx-value-view="month"
+              class={[
+                "btn btn-xs sm:btn-sm",
+                if(@view_type == :month, do: "btn-primary", else: "btn-outline")
+              ]}
+            >
+              Month
+            </button>
+            <button
+              type="button"
+              phx-click="change_view"
+              phx-value-view="week"
+              class={[
+                "btn btn-xs sm:btn-sm",
+                if(@view_type == :week, do: "btn-primary", else: "btn-outline")
+              ]}
+            >
+              Week
+            </button>
+            <button
+              type="button"
+              phx-click="change_view"
+              phx-value-view="day"
+              class={[
+                "btn btn-xs sm:btn-sm",
+                if(@view_type == :day, do: "btn-primary", else: "btn-outline")
+              ]}
+            >
+              Day
+            </button>
+          </div>
+        </div>
+        
+<!-- Month Navigation -->
+        <div class="flex items-center space-x-4 mt-4 lg:mt-0">
+          <button type="button" phx-click="prev_month" class="btn btn-ghost btn-sm btn-circle">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </button>
+
+          <h2 class="text-xl font-semibold min-w-[200px] text-center">
+            {format_month_year(@current_month)}
+          </h2>
+
+          <button type="button" phx-click="next_month" class="btn btn-ghost btn-sm btn-circle">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+<!-- Calendar Grid -->
+      <%= if @view_type == :month do %>
+        <div class="grid grid-cols-7 gap-1 bg-base-200 p-2 rounded-lg">
+          <!-- Day Headers -->
+          <div class="bg-base-300 p-3 text-center text-sm font-medium rounded">Mon</div>
+          <div class="bg-base-300 p-3 text-center text-sm font-medium rounded">Tue</div>
+          <div class="bg-base-300 p-3 text-center text-sm font-medium rounded">Wed</div>
+          <div class="bg-base-300 p-3 text-center text-sm font-medium rounded">Thu</div>
+          <div class="bg-base-300 p-3 text-center text-sm font-medium rounded">Fri</div>
+          <div class="bg-base-300 p-3 text-center text-sm font-medium rounded">Sat</div>
+          <div class="bg-base-300 p-3 text-center text-sm font-medium rounded">Sun</div>
+          
+<!-- Calendar Days -->
+          <%= for week <- calendar_weeks(@current_month) do %>
+            <%= for date <- week do %>
+              <div
+                class={[
+                  "bg-base-100 p-2 min-h-[120px] cursor-pointer hover:bg-base-200 transition-colors rounded",
+                  unless(in_current_month?(date, @current_month),
+                    do: "text-base-content/50 bg-base-200"
+                  ),
+                  if(date == Date.utc_today(), do: "ring-2 ring-primary")
+                ]}
+                phx-click="select_date"
+                phx-value-date={Date.to_iso8601(date)}
+              >
+                <div class="flex items-center justify-between">
+                  <span class={[
+                    "text-sm font-medium",
+                    if(date == Date.utc_today(), do: "text-primary", else: "")
+                  ]}>
+                    {date.day}
+                  </span>
+                </div>
+                
+<!-- Activities for this date -->
+                <div class="mt-1 space-y-1">
+                  <%= for ride <- Map.get(@calendar_data, date, []) do %>
+                    <div class="badge badge-primary badge-sm w-full justify-start truncate">
+                      {ride.horse.name} - {String.capitalize(to_string(ride.ride_type))}
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Ride Scheduling Modal -->
+<div class={["modal", if(@show_ride_form, do: "modal-open", else: "")]}>
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="font-bold text-lg">
+        Schedule Ride for {if @selected_date,
+          do: Calendar.strftime(@selected_date, "%B %d, %Y")}
+      </h3>
+      <button type="button" phx-click="close_form" class="btn btn-sm btn-circle btn-ghost">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <form phx-submit="schedule_ride" class="space-y-4">
+      <div class="form-control">
+        <label class="label" for="horse_id">
+          <span class="label-text">Horse</span>
+        </label>
+        <select name="horse_id" id="horse_id" required class="select select-bordered w-full">
+          <option value="">Select a horse...</option>
+          <%= for horse <- @horses do %>
+            <option value={horse.id}>{horse.name}</option>
+          <% end %>
+        </select>
+      </div>
+
+      <div class="form-control">
+        <label class="label" for="time">
+          <span class="label-text">Time</span>
+        </label>
+        <input type="time" name="time" id="time" required class="input input-bordered w-full" />
+      </div>
+
+      <div class="form-control">
+        <label class="label" for="ride_type">
+          <span class="label-text">Ride Type</span>
+        </label>
+        <select name="ride_type" id="ride_type" required class="select select-bordered w-full">
+          <option value="">Select type...</option>
+          <option value="training">Training</option>
+          <option value="lesson">Lesson</option>
+          <option value="trail">Trail</option>
+          <option value="competition">Competition</option>
+          <option value="exercise">Exercise</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-control">
+        <label class="label" for="duration_minutes">
+          <span class="label-text">Duration (minutes)</span>
+        </label>
+        <input
+          type="number"
+          name="duration_minutes"
+          id="duration_minutes"
+          min="15"
+          max="480"
+          step="15"
+          class="input input-bordered w-full"
+        />
+      </div>
+
+      <div class="form-control">
+        <label class="label" for="rider_name">
+          <span class="label-text">Rider Name</span>
+        </label>
+        <input type="text" name="rider_name" id="rider_name" class="input input-bordered w-full" />
+      </div>
+
+      <div class="form-control">
+        <label class="label" for="instructor_name">
+          <span class="label-text">Instructor Name</span>
+        </label>
+        <input
+          type="text"
+          name="instructor_name"
+          id="instructor_name"
+          class="input input-bordered w-full"
+        />
+      </div>
+
+      <div class="form-control">
+        <label class="label" for="notes">
+          <span class="label-text">Notes</span>
+        </label>
+        <textarea name="notes" id="notes" rows="3" class="textarea textarea-bordered w-full"></textarea>
+      </div>
+
+      <div class="modal-action">
+        <button type="button" phx-click="close_form" class="btn btn-ghost">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary">
+          Schedule Ride
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="modal-backdrop" phx-click="close_form"></div>
+</div>

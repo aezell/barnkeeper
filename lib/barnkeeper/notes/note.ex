@@ -8,9 +8,6 @@ defmodule Barnkeeper.Notes.Note do
   alias Barnkeeper.Horses.Horse
   alias Barnkeeper.Accounts.User
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-
   schema "notes" do
     field :title, :string
     field :content, :string

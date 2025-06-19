@@ -11,9 +11,6 @@ defmodule Barnkeeper.Activities.Ride do
   @ride_types [:training, :lesson, :trail, :competition, :exercise, :other]
   @statuses [:scheduled, :completed, :cancelled, :no_show]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-
   schema "rides" do
     field :ride_type, Ecto.Enum, values: @ride_types
     field :status, Ecto.Enum, values: @statuses, default: :scheduled
@@ -35,13 +32,25 @@ defmodule Barnkeeper.Activities.Ride do
   @doc false
   def changeset(ride, attrs) do
     ride
-    |> cast(attrs, [:ride_type, :status, :scheduled_at, :duration_minutes,
-                    :rider_name, :instructor_name, :discipline, :goals,
-                    :notes, :completed_at, :horse_id, :scheduled_by_id])
+    |> cast(attrs, [
+      :ride_type,
+      :status,
+      :scheduled_at,
+      :duration_minutes,
+      :rider_name,
+      :instructor_name,
+      :discipline,
+      :goals,
+      :notes,
+      :completed_at,
+      :horse_id,
+      :scheduled_by_id
+    ])
     |> validate_required([:ride_type, :scheduled_at, :horse_id, :scheduled_by_id])
     |> validate_inclusion(:ride_type, @ride_types)
     |> validate_inclusion(:status, @statuses)
-    |> validate_number(:duration_minutes, greater_than: 0, less_than: 480) # Max 8 hours
+    # Max 8 hours
+    |> validate_number(:duration_minutes, greater_than: 0, less_than: 480)
     |> validate_length(:rider_name, max: 100)
     |> validate_length(:instructor_name, max: 100)
     |> validate_length(:discipline, max: 50)
@@ -57,8 +66,10 @@ defmodule Barnkeeper.Activities.Ride do
     case {status, completed_at} do
       {:completed, nil} ->
         add_error(changeset, :completed_at, "must be set when status is completed")
+
       {status, completed_at} when status != :completed and not is_nil(completed_at) ->
         add_error(changeset, :completed_at, "should only be set when status is completed")
+
       _ ->
         changeset
     end
@@ -87,8 +98,8 @@ defmodule Barnkeeper.Activities.Ride do
   def upcoming?(%__MODULE__{scheduled_at: scheduled_at}) do
     now = DateTime.utc_now()
     tomorrow = DateTime.add(now, 24 * 60 * 60, :second)
-    
+
     DateTime.compare(scheduled_at, now) != :lt and
-    DateTime.compare(scheduled_at, tomorrow) != :gt
+      DateTime.compare(scheduled_at, tomorrow) != :gt
   end
 end

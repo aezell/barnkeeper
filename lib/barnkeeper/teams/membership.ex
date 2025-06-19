@@ -10,9 +10,6 @@ defmodule Barnkeeper.Teams.Membership do
 
   @roles [:owner, :manager, :trainer, :caretaker, :viewer]
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-
   schema "memberships" do
     field :role, Ecto.Enum, values: @roles
     field :active, :boolean, default: true

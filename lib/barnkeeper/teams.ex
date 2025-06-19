@@ -6,7 +6,6 @@ defmodule Barnkeeper.Teams do
   import Ecto.Query, warn: false
   alias Barnkeeper.Repo
   alias Barnkeeper.Teams.{Team, Membership}
-  alias Barnkeeper.Accounts.User
 
   @doc """
   Returns the list of teams.
@@ -103,15 +102,17 @@ defmodule Barnkeeper.Teams do
   Checks if a user has access to a team.
   """
   def user_has_team_access?(user_id, team_id, role \\ nil) do
-    query = from(m in Membership,
-      where: m.user_id == ^user_id and m.team_id == ^team_id
-    )
+    query =
+      from(m in Membership,
+        where: m.user_id == ^user_id and m.team_id == ^team_id
+      )
 
-    query = if role do
-      from(m in query, where: m.role == ^role)
-    else
-      query
-    end
+    query =
+      if role do
+        from(m in query, where: m.role == ^role)
+      else
+        query
+      end
 
     Repo.exists?(query)
   end
@@ -124,5 +125,21 @@ defmodule Barnkeeper.Teams do
       nil -> nil
       membership -> membership.role
     end
+  end
+
+  @doc """
+  Creates a team with the given user as admin.
+  """
+  def create_team_with_admin(team_attrs, user) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:team, Team.changeset(%Team{}, team_attrs))
+    |> Ecto.Multi.insert(:membership, fn %{team: team} ->
+      Membership.changeset(%Membership{}, %{
+        user_id: user.id,
+        team_id: team.id,
+        role: :owner
+      })
+    end)
+    |> Repo.transaction()
   end
 end

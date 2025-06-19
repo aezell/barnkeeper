@@ -1,0 +1,154 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-md mx-auto">
+    <div class="card bg-base-100 shadow-lg">
+      <div class="card-body">
+        <div class="text-center mb-6">
+          <h1 class="card-title justify-center text-3xl mb-2">Setup Your Team</h1>
+          <p class="text-base-content/70">
+            Create a new barn or farm team to start managing your horses
+          </p>
+        </div>
+
+        <.form
+          for={@form}
+          id="team-form"
+          phx-submit="save_team"
+          phx-change="validate"
+          class="space-y-4"
+        >
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Team Name <span class="text-error">*</span></span>
+            </label>
+            <input
+              type="text"
+              name={@form[:name].name}
+              value={@form[:name].value}
+              required
+              class="input input-bordered w-full"
+              placeholder="Enter your team name"
+            />
+            <%= if @form[:name].errors != [] do %>
+              <label class="label">
+                <span class="label-text-alt text-error">
+                  {Enum.join(Enum.map(@form[:name].errors, &translate_error(&1)), ", ")}
+                </span>
+              </label>
+            <% end %>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Description</span>
+            </label>
+            <textarea
+              name={@form[:description].name}
+              class="textarea textarea-bordered w-full"
+              rows="3"
+              placeholder="Tell us about your barn or farm"
+            >{@form[:description].value}</textarea>
+            <%= if @form[:description].errors != [] do %>
+              <label class="label">
+                <span class="label-text-alt text-error">
+                  {Enum.join(Enum.map(@form[:description].errors, &translate_error(&1)), ", ")}
+                </span>
+              </label>
+            <% end %>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">City</span>
+              </label>
+              <input
+                type="text"
+                name={@form[:city].name}
+                value={@form[:city].value}
+                class="input input-bordered w-full"
+                placeholder="City"
+              />
+              <%= if @form[:city].errors != [] do %>
+                <label class="label">
+                  <span class="label-text-alt text-error">
+                    {Enum.join(Enum.map(@form[:city].errors, &translate_error(&1)), ", ")}
+                  </span>
+                </label>
+              <% end %>
+            </div>
+
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">State</span>
+              </label>
+              <input
+                type="text"
+                name={@form[:state].name}
+                value={@form[:state].value}
+                class="input input-bordered w-full"
+                placeholder="State"
+              />
+              <%= if @form[:state].errors != [] do %>
+                <label class="label">
+                  <span class="label-text-alt text-error">
+                    {Enum.join(Enum.map(@form[:state].errors, &translate_error(&1)), ", ")}
+                  </span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Phone</span>
+            </label>
+            <input
+              type="text"
+              name={@form[:phone].name}
+              value={@form[:phone].value}
+              class="input input-bordered w-full"
+              placeholder="Phone number"
+            />
+            <%= if @form[:phone].errors != [] do %>
+              <label class="label">
+                <span class="label-text-alt text-error">
+                  {Enum.join(Enum.map(@form[:phone].errors, &translate_error(&1)), ", ")}
+                </span>
+              </label>
+            <% end %>
+          </div>
+
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              name={@form[:email].name}
+              value={@form[:email].value}
+              class="input input-bordered w-full"
+              placeholder="Email address"
+            />
+            <%= if @form[:email].errors != [] do %>
+              <label class="label">
+                <span class="label-text-alt text-error">
+                  {Enum.join(Enum.map(@form[:email].errors, &translate_error(&1)), ", ")}
+                </span>
+              </label>
+            <% end %>
+          </div>
+
+          <div class="card-actions pt-4">
+            <button
+              type="submit"
+              class="btn btn-primary w-full"
+              phx-disable-with="Creating team..."
+            >
+              Create Team
+            </button>
+          </div>
+        </.form>
+      </div>
+    </div>
+  </div>
+</div>

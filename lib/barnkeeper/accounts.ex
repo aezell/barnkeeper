@@ -5,26 +5,7 @@ defmodule Barnkeeper.Accounts do
 
   import Ecto.Query, warn: false
   alias Barnkeeper.Repo
-  alias Barnkeeper.Accounts.User
-
-  @doc """
-  Returns the list of users.
-  """
-  def list_users do
-    Repo.all(User)
-  end
-
-  @doc """
-  Gets a single user.
-  """
-  def get_user!(id), do: Repo.get!(User, id)
-
-  @doc """
-  Gets a user by email.
-  """
-  def get_user_by_email(email) do
-    Repo.get_by(User, email: email)
-  end
+  alias Barnkeeper.Accounts.{User, UserToken, UserNotifier}
 
   @doc """
   Creates a user.
@@ -57,8 +38,6 @@ defmodule Barnkeeper.Accounts do
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
   end
-
-  alias Barnkeeper.Accounts.{User, UserToken, UserNotifier}
 
   ## Database getters
 

@@ -72,4 +72,34 @@ defmodule Barnkeeper.Media do
     )
     |> Repo.one()
   end
+
+  @doc """
+  Sets a photo as the primary photo for a horse, unsetting any existing primary.
+  """
+  def set_primary_photo(team_id, photo_id) do
+    Repo.transaction(fn ->
+      # Get the photo to ensure it exists and belongs to the team
+      photo = get_photo!(team_id, photo_id)
+
+      # Unset any existing primary photos for this horse
+      {count, _} =
+        from(p in Photo,
+          join: h in assoc(p, :horse),
+          where: h.team_id == ^team_id and p.horse_id == ^photo.horse_id and p.is_primary == true
+        )
+        |> Repo.update_all(set: [is_primary: false])
+
+      # Set this photo as primary
+      {:ok, updated_photo} = update_photo(photo, %{is_primary: true})
+      {count, updated_photo}
+    end)
+  end
+
+  @doc """
+  Deletes a photo with team validation.
+  """
+  def delete_photo(team_id, photo_id) do
+    photo = get_photo!(team_id, photo_id)
+    delete_photo(photo)
+  end
 end

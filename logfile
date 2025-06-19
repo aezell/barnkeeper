@@ -1,0 +1,63 @@
+2025-06-19 09:36:25.365 CDT [3386] LOG:  starting PostgreSQL 17.5 on aarch64-apple-darwin24.5.0, compiled by Apple clang version 17.0.0 (clang-1700.0.13.5), 64-bit
+2025-06-19 09:36:25.368 CDT [3386] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-06-19 09:36:25.368 CDT [3386] LOG:  listening on IPv6 address "::1", port 5432
+2025-06-19 09:36:25.369 CDT [3386] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-06-19 09:36:25.374 CDT [3389] LOG:  database system was shut down at 2025-06-19 00:31:35 CDT
+2025-06-19 09:36:25.378 CDT [3386] LOG:  database system is ready to accept connections
+2025-06-19 09:38:53.821 CDT [3473] ERROR:  column r0.status does not exist at character 33
+2025-06-19 09:38:53.821 CDT [3473] STATEMENT:  SELECT r0."id", r0."ride_type", r0."status", r0."scheduled_at", r0."duration_minutes", r0."rider_name", r0."instructor_name", r0."discipline", r0."goals", r0."notes", r0."completed_at", r0."horse_id", r0."scheduled_by_id", r0."inserted_at", r0."updated_at" FROM "rides" AS r0 INNER JOIN "horses" AS h1 ON h1."id" = r0."horse_id" WHERE (((h1."team_id" = $1) AND (r0."scheduled_at" >= $2)) AND (r0."scheduled_at" <= $3)) ORDER BY r0."scheduled_at"
+2025-06-19 09:41:25.369 CDT [3387] LOG:  checkpoint starting: time
+2025-06-19 09:41:26.283 CDT [3387] LOG:  checkpoint complete: wrote 11 buffers (0.1%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.911 s, sync=0.001 s, total=0.914 s; sync files=12, longest=0.001 s, average=0.001 s; distance=8 kB, estimate=8 kB; lsn=0/23C59A0, redo lsn=0/23C5948
+2025-06-19 09:51:12.643 CDT [10070] LOG:  unexpected EOF on client connection with an open transaction
+2025-06-19 09:51:12.643 CDT [10071] LOG:  unexpected EOF on client connection with an open transaction
+2025-06-19 09:51:12.643 CDT [10072] LOG:  unexpected EOF on client connection with an open transaction
+2025-06-19 09:51:12.643 CDT [10073] LOG:  unexpected EOF on client connection with an open transaction
+2025-06-19 09:51:25.244 CDT [3387] LOG:  checkpoint starting: time
+2025-06-19 09:51:28.610 CDT [3387] LOG:  checkpoint complete: wrote 34 buffers (0.2%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.361 s, sync=0.002 s, total=3.366 s; sync files=32, longest=0.001 s, average=0.001 s; distance=47 kB, estimate=47 kB; lsn=0/23D73C8, redo lsn=0/23D1660
+2025-06-19 09:51:30.879 CDT [10886] ERROR:  duplicate key value violates unique constraint "horses_name_team_id_index"
+2025-06-19 09:51:30.879 CDT [10886] DETAIL:  Key (name, team_id)=(Test Horse, 82) already exists.
+2025-06-19 09:51:30.879 CDT [10886] STATEMENT:  INSERT INTO "horses" ("active","name","size","color","breed","team_id","birth_date","gender","inserted_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "id"
+2025-06-19 09:51:30.983 CDT [10890] ERROR:  duplicate key value violates unique constraint "users_tokens_context_token_index"
+2025-06-19 09:51:30.983 CDT [10890] DETAIL:  Key (context, token)=(session, \x04b61e718d986d92647c01b253362e8451bba5f2ea2c3df9bf78be4912b50a2c) already exists.
+2025-06-19 09:51:30.983 CDT [10890] STATEMENT:  INSERT INTO "users_tokens" ("context","token","user_id","inserted_at") VALUES ($1,$2,$3,$4) RETURNING "id"
+2025-06-19 09:56:25.604 CDT [3387] LOG:  checkpoint starting: time
+2025-06-19 09:56:29.569 CDT [3387] LOG:  checkpoint complete: wrote 43 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.962 s, sync=0.003 s, total=3.966 s; sync files=40, longest=0.001 s, average=0.001 s; distance=188 kB, estimate=188 kB; lsn=0/2400718, redo lsn=0/24006C0
+2025-06-19 10:01:39.906 CDT [15276] ERROR:  duplicate key value violates unique constraint "horses_name_team_id_index"
+2025-06-19 10:01:39.906 CDT [15276] DETAIL:  Key (name, team_id)=(Test Horse, 98) already exists.
+2025-06-19 10:01:39.906 CDT [15276] STATEMENT:  INSERT INTO "horses" ("active","name","size","color","team_id","breed","gender","birth_date","inserted_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "id"
+2025-06-19 10:01:40.077 CDT [15282] ERROR:  duplicate key value violates unique constraint "users_tokens_context_token_index"
+2025-06-19 10:01:40.077 CDT [15282] DETAIL:  Key (context, token)=(session, \xb513a10c055ff7616cd14e005ccae94bd08bdbe4c6fe0674c2eeb858154e012c) already exists.
+2025-06-19 10:01:40.077 CDT [15282] STATEMENT:  INSERT INTO "users_tokens" ("context","token","user_id","inserted_at") VALUES ($1,$2,$3,$4) RETURNING "id"
+2025-06-19 10:06:25.557 CDT [3387] LOG:  checkpoint starting: time
+2025-06-19 10:06:29.312 CDT [3387] LOG:  checkpoint complete: wrote 41 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=3.751 s, sync=0.003 s, total=3.755 s; sync files=41, longest=0.001 s, average=0.001 s; distance=187 kB, estimate=188 kB; lsn=0/242F500, redo lsn=0/242F4A8
+2025-06-19 10:27:04.569 CDT [22134] ERROR:  duplicate key value violates unique constraint "horses_name_team_id_index"
+2025-06-19 10:27:04.569 CDT [22134] DETAIL:  Key (name, team_id)=(Test Horse, 111) already exists.
+2025-06-19 10:27:04.569 CDT [22134] STATEMENT:  INSERT INTO "horses" ("active","name","size","color","team_id","breed","gender","birth_date","inserted_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "id"
+2025-06-19 10:27:04.754 CDT [22132] ERROR:  duplicate key value violates unique constraint "users_tokens_context_token_index"
+2025-06-19 10:27:04.754 CDT [22132] DETAIL:  Key (context, token)=(session, \x5cf70591a83566a6d944cc61a2d2a3a8546ccc2bf1eacf39b2075a1ec47d54a1) already exists.
+2025-06-19 10:27:04.754 CDT [22132] STATEMENT:  INSERT INTO "users_tokens" ("context","token","user_id","inserted_at") VALUES ($1,$2,$3,$4) RETURNING "id"
+2025-06-19 10:30:24.597 CDT [25159] ERROR:  duplicate key value violates unique constraint "horses_name_team_id_index"
+2025-06-19 10:30:24.597 CDT [25159] DETAIL:  Key (name, team_id)=(Test Horse, 132) already exists.
+2025-06-19 10:30:24.597 CDT [25159] STATEMENT:  INSERT INTO "horses" ("active","name","size","color","team_id","breed","gender","birth_date","inserted_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "id"
+2025-06-19 10:30:24.743 CDT [25155] ERROR:  duplicate key value violates unique constraint "users_tokens_context_token_index"
+2025-06-19 10:30:24.743 CDT [25155] DETAIL:  Key (context, token)=(session, \x3b72c5245fadbe89ed1d819d4451e91e5fc91c20adeeeac1e14f3f1162884330) already exists.
+2025-06-19 10:30:24.743 CDT [25155] STATEMENT:  INSERT INTO "users_tokens" ("context","token","user_id","inserted_at") VALUES ($1,$2,$3,$4) RETURNING "id"
+2025-06-19 10:31:25.360 CDT [3387] LOG:  checkpoint starting: time
+2025-06-19 10:31:29.623 CDT [3387] LOG:  checkpoint complete: wrote 46 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=4.258 s, sync=0.004 s, total=4.264 s; sync files=45, longest=0.001 s, average=0.001 s; distance=341 kB, estimate=341 kB; lsn=0/2484978, redo lsn=0/24848E8
+2025-06-19 10:32:28.583 CDT [27730] ERROR:  duplicate key value violates unique constraint "horses_name_team_id_index"
+2025-06-19 10:32:28.583 CDT [27730] DETAIL:  Key (name, team_id)=(Test Horse, 147) already exists.
+2025-06-19 10:32:28.583 CDT [27730] STATEMENT:  INSERT INTO "horses" ("active","name","size","color","breed","team_id","birth_date","gender","inserted_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "id"
+2025-06-19 10:32:28.722 CDT [27729] ERROR:  duplicate key value violates unique constraint "users_tokens_context_token_index"
+2025-06-19 10:32:28.722 CDT [27729] DETAIL:  Key (context, token)=(session, \xbe398542748f4ab6011191accb837420a111b87001b2692e028f4e17fbfb0c89) already exists.
+2025-06-19 10:32:28.722 CDT [27729] STATEMENT:  INSERT INTO "users_tokens" ("context","token","user_id","inserted_at") VALUES ($1,$2,$3,$4) RETURNING "id"
+2025-06-19 10:33:37.987 CDT [28641] ERROR:  duplicate key value violates unique constraint "horses_name_team_id_index"
+2025-06-19 10:33:37.987 CDT [28641] DETAIL:  Key (name, team_id)=(Test Horse, 157) already exists.
+2025-06-19 10:33:37.987 CDT [28641] STATEMENT:  INSERT INTO "horses" ("active","name","size","color","breed","team_id","birth_date","gender","inserted_at","updated_at") VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING "id"
+2025-06-19 10:34:56.081 CDT [30577] ERROR:  duplicate key value violates unique constraint "users_tokens_context_token_index"
+2025-06-19 10:34:56.081 CDT [30577] DETAIL:  Key (context, token)=(session, \xe78312dd77b6a74af0b1c41054f87b228d4024a587578ffa21e16cb9d255c7f2) already exists.
+2025-06-19 10:34:56.081 CDT [30577] STATEMENT:  INSERT INTO "users_tokens" ("context","token","user_id","inserted_at") VALUES ($1,$2,$3,$4) RETURNING "id"
+2025-06-19 10:35:26.474 CDT [32005] ERROR:  duplicate key value violates unique constraint "users_tokens_context_token_index"
+2025-06-19 10:35:26.474 CDT [32005] DETAIL:  Key (context, token)=(session, \xa29cffa9ebc5f983d137a31143fc024904e841338586d29b2c1912a598ffbc23) already exists.
+2025-06-19 10:35:26.474 CDT [32005] STATEMENT:  INSERT INTO "users_tokens" ("context","token","user_id","inserted_at") VALUES ($1,$2,$3,$4) RETURNING "id"
+2025-06-19 10:36:25.599 CDT [3387] LOG:  checkpoint starting: time
+2025-06-19 10:36:32.387 CDT [3387] LOG:  checkpoint complete: wrote 72 buffers (0.4%); 0 WAL file(s) added, 0 removed, 0 recycled; write=6.785 s, sync=0.003 s, total=6.788 s; sync files=64, longest=0.001 s, average=0.001 s; distance=534 kB, estimate=534 kB; lsn=0/250A1D0, redo lsn=0/250A140

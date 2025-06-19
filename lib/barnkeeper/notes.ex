@@ -8,6 +8,19 @@ defmodule Barnkeeper.Notes do
   alias Barnkeeper.Notes.Note
 
   @doc """
+  Returns the list of all notes for a team.
+  """
+  def list_notes(team_id) do
+    from(n in Note,
+      join: h in assoc(n, :horse),
+      where: h.team_id == ^team_id,
+      order_by: [desc: n.inserted_at],
+      preload: [:horse, :author]
+    )
+    |> Repo.all()
+  end
+
+  @doc """
   Returns the list of notes for a horse.
   """
   def list_notes(team_id, horse_id) do
@@ -69,11 +82,12 @@ defmodule Barnkeeper.Notes do
   """
   def search_notes(team_id, horse_id, search_term) do
     search_term = "%#{search_term}%"
-    
+
     from(n in Note,
       join: h in assoc(n, :horse),
-      where: h.team_id == ^team_id and n.horse_id == ^horse_id and
-             (ilike(n.title, ^search_term) or ilike(n.content, ^search_term)),
+      where:
+        h.team_id == ^team_id and n.horse_id == ^horse_id and
+          (ilike(n.title, ^search_term) or ilike(n.content, ^search_term)),
       order_by: [desc: n.inserted_at],
       preload: :author
     )

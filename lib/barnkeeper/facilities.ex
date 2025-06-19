@@ -28,7 +28,7 @@ defmodule Barnkeeper.Facilities do
   """
   def create_location(team_id, attrs \\ %{}) do
     attrs = Map.put(attrs, :team_id, team_id)
-    
+
     %Location{}
     |> Location.changeset(attrs)
     |> Repo.insert()

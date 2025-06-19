@@ -25,9 +25,10 @@ defmodule Barnkeeper.Activities do
   def list_rides_by_date_range(team_id, start_date, end_date) do
     from(r in Ride,
       join: h in assoc(r, :horse),
-      where: h.team_id == ^team_id and 
-             r.scheduled_at >= ^start_date and 
-             r.scheduled_at <= ^end_date,
+      where:
+        h.team_id == ^team_id and
+          r.scheduled_at >= ^start_date and
+          r.scheduled_at <= ^end_date,
       order_by: r.scheduled_at,
       preload: :horse
     )
@@ -39,12 +40,13 @@ defmodule Barnkeeper.Activities do
   """
   def list_upcoming_rides(team_id, days_ahead \\ 7) do
     future_datetime = DateTime.add(DateTime.utc_now(), days_ahead * 24 * 60 * 60, :second)
-    
+
     from(r in Ride,
       join: h in assoc(r, :horse),
-      where: h.team_id == ^team_id and 
-             r.scheduled_at >= fragment("NOW()") and 
-             r.scheduled_at <= ^future_datetime,
+      where:
+        h.team_id == ^team_id and
+          r.scheduled_at >= fragment("NOW()") and
+          r.scheduled_at <= ^future_datetime,
       order_by: r.scheduled_at,
       preload: :horse
     )

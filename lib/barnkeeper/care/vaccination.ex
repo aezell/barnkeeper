@@ -8,9 +8,6 @@ defmodule Barnkeeper.Care.Vaccination do
   alias Barnkeeper.Horses.Horse
   alias Barnkeeper.Accounts.User
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-
   schema "vaccinations" do
     field :vaccine_name, :string
     field :manufacturer, :string
@@ -31,9 +28,19 @@ defmodule Barnkeeper.Care.Vaccination do
   @doc false
   def changeset(vaccination, attrs) do
     vaccination
-    |> cast(attrs, [:vaccine_name, :manufacturer, :lot_number, :administered_date,
-                    :administered_by, :site, :dose, :next_due_date, :notes,
-                    :horse_id, :recorded_by_id])
+    |> cast(attrs, [
+      :vaccine_name,
+      :manufacturer,
+      :lot_number,
+      :administered_date,
+      :administered_by,
+      :site,
+      :dose,
+      :next_due_date,
+      :notes,
+      :horse_id,
+      :recorded_by_id
+    ])
     |> validate_required([:vaccine_name, :administered_date, :horse_id, :recorded_by_id])
     |> validate_length(:vaccine_name, min: 1, max: 100)
     |> validate_length(:manufacturer, max: 100)
@@ -49,6 +56,7 @@ defmodule Barnkeeper.Care.Vaccination do
   Checks if the vaccination is due for renewal.
   """
   def due_soon?(%__MODULE__{next_due_date: nil}), do: false
+
   def due_soon?(%__MODULE__{next_due_date: next_due_date}, days_ahead \\ 30) do
     future_date = Date.add(Date.utc_today(), days_ahead)
     Date.compare(next_due_date, future_date) != :gt
@@ -58,6 +66,7 @@ defmodule Barnkeeper.Care.Vaccination do
   Checks if the vaccination is overdue.
   """
   def overdue?(%__MODULE__{next_due_date: nil}), do: false
+
   def overdue?(%__MODULE__{next_due_date: next_due_date}) do
     Date.compare(next_due_date, Date.utc_today()) == :lt
   end

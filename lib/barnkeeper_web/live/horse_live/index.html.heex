@@ -1,0 +1,218 @@
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
+    <div class="mb-4 sm:mb-0">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Horses</h1>
+      <p class="text-sm sm:text-base text-gray-600">Manage your horses for {@team.name}</p>
+    </div>
+    <div class="w-full sm:w-auto">
+      <.link patch={~p"/horses/new"} class="btn btn-primary w-full sm:w-auto">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 sm:h-5 sm:w-5 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          />
+        </svg>
+        New Horse
+      </.link>
+    </div>
+  </div>
+
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
+    id="horses"
+    phx-update="stream"
+  >
+    <div
+      :for={{id, horse} <- @streams.horses}
+      id={id}
+      class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow"
+    >
+      <div class="card-body p-4 sm:p-6">
+        <div class="flex items-start justify-between mb-4">
+          <div class="avatar placeholder">
+            <div class="bg-neutral text-neutral-content rounded-full w-12 sm:w-16">
+              <span class="text-lg sm:text-xl">{String.first(horse.name)}</span>
+            </div>
+          </div>
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-xs sm:btn-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                />
+              </svg>
+            </div>
+            <ul
+              tabindex="0"
+              class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-32"
+            >
+              <li>
+                <.link patch={~p"/horses/#{horse.id}/edit"}>
+                  Edit
+                </.link>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  phx-click="delete"
+                  phx-value-id={horse.id}
+                  data-confirm="Are you sure?"
+                  class="text-red-600"
+                >
+                  Delete
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 class="card-title text-lg sm:text-xl mb-2 truncate">{horse.name}</h2>
+
+        <div class="space-y-2">
+          <div class="flex items-center text-xs sm:text-sm text-gray-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+              />
+            </svg>
+            {horse.breed}
+          </div>
+
+          <div class="flex items-center text-sm text-gray-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"
+              />
+            </svg>
+            {horse.color}
+          </div>
+
+          <%= if horse.birth_date do %>
+            <div class="flex items-center text-sm text-gray-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              Born {horse.birth_date}
+            </div>
+          <% end %>
+
+          <%= if horse.size do %>
+            <div class="flex items-center text-sm text-gray-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                />
+              </svg>
+              {horse.size}
+            </div>
+          <% end %>
+        </div>
+
+        <div class="card-actions justify-end mt-4">
+          <.link
+            navigate={~p"/horses/#{horse.id}"}
+            class="btn btn-primary btn-xs sm:btn-sm w-full sm:w-auto"
+          >
+            View Details
+          </.link>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= if @horses_count == 0 do %>
+    <div class="text-center py-12">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-24 w-24 mx-auto text-gray-400 mb-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1"
+          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+        />
+      </svg>
+      <h3 class="text-xl font-medium text-gray-900 mb-2">No horses yet</h3>
+      <p class="text-gray-500 mb-6">Get started by adding your first horse to the barn</p>
+      <.link patch={~p"/horses/new"} class="btn btn-primary">
+        Add Your First Horse
+      </.link>
+    </div>
+  <% end %>
+</div>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="horse-modal"
+  show
+  on_cancel={JS.patch(~p"/horses")}
+>
+  <.live_component
+    module={BarnkeeperWeb.HorseLive.FormComponent}
+    id={@horse.id || :new}
+    title={@page_title}
+    action={@live_action}
+    horse={@horse}
+    team_id={@team.id}
+    patch={~p"/horses"}
+  />
+</.modal>
