@@ -20,6 +20,7 @@ defmodule Barnkeeper.Horses do
   """
   def get_horse!(team_id, id) do
     from(h in Horse, where: h.team_id == ^team_id and h.id == ^id)
+    |> preload(:notes)
     |> Repo.one!()
   end
 
