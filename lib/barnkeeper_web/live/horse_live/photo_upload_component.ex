@@ -212,13 +212,13 @@ defmodule BarnkeeperWeb.HorseLive.PhotoUploadComponent do
     end
   end
 
-  defp handle_progress(:photos, entry, socket) do
+  def handle_progress(:photos, entry, socket) do
     if entry.done? do
       # File upload completed
-      socket
+      {:noreply, socket}
     else
       # Upload in progress
-      socket
+      {:noreply, socket}
     end
   end
 
