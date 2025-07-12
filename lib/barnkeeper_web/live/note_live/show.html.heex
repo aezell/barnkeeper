@@ -30,7 +30,12 @@
         Note Details
       </h1>
       <p class="text-sm sm:text-base text-gray-600">
-        {format_note_type(@note.note_type)} note for {@note.horse.name}
+        <%= if @note.is_private do %>
+          Private
+        <% else %>
+          Public
+        <% end %>
+        note for {@note.horse.name}
       </p>
     </div>
     <div class="w-full sm:w-auto">
@@ -67,10 +72,14 @@
               <p class="text-lg font-semibold">{@note.horse.name}</p>
             </div>
             <div>
-              <label class="text-sm font-medium text-gray-500">Note Type</label>
+              <label class="text-sm font-medium text-gray-500">Privacy</label>
               <p class="text-lg">
                 <span class="badge badge-primary">
-                  {format_note_type(@note.note_type)}
+                  <%= if @note.is_private do %>
+                    Private
+                  <% else %>
+                    Public
+                  <% end %>
                 </span>
               </p>
             </div>
@@ -91,8 +100,8 @@
           <h3 class="card-title text-lg mb-2">Record Information</h3>
           <div class="space-y-2">
             <div>
-              <label class="text-sm font-medium text-gray-500">Recorded By</label>
-              <p class="text-sm">{@note.recorded_by.email}</p>
+              <label class="text-sm font-medium text-gray-500">Author</label>
+              <p class="text-sm">{@note.author.email}</p>
             </div>
             <div>
               <label class="text-sm font-medium text-gray-500">Created</label>

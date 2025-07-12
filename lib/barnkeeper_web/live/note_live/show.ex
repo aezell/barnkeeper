@@ -39,11 +39,4 @@ defmodule BarnkeeperWeb.NoteLive.Show do
   def handle_info({BarnkeeperWeb.NoteLive.FormComponent, {:saved, note}}, socket) do
     {:noreply, assign(socket, :note, note)}
   end
-
-  defp format_note_type(note_type) do
-    note_type
-    |> Atom.to_string()
-    |> String.replace("_", " ")
-    |> String.upcase()
-  end
 end

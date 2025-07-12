@@ -30,21 +30,7 @@ defmodule BarnkeeperWeb.NoteLive.FormComponent do
 
         <.input field={@form[:title]} type="text" label="Title" required />
 
-        <.input
-          field={@form[:note_type]}
-          type="select"
-          label="Note Type"
-          options={[
-            {"General", "general"},
-            {"Medical", "medical"},
-            {"Training", "training"},
-            {"Behavior", "behavior"},
-            {"Feeding", "feeding"},
-            {"Other", "other"}
-          ]}
-          prompt="Select note type"
-          required
-        />
+        <.input field={@form[:is_private]} type="checkbox" label="Private Note" />
 
         <.input field={@form[:content]} type="textarea" label="Content" rows="6" required />
 
@@ -96,8 +82,8 @@ defmodule BarnkeeperWeb.NoteLive.FormComponent do
   end
 
   defp save_note(socket, :new, note_params) do
-    # Add current user as recorded_by
-    note_params = Map.put(note_params, "recorded_by_id", socket.assigns.current_user_id)
+    # Add current user as author
+    note_params = Map.put(note_params, "author_id", socket.assigns.current_user_id)
 
     case Notes.create_note(note_params) do
       {:ok, note} ->

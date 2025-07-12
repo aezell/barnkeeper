@@ -4,7 +4,6 @@ defmodule BarnkeeperWeb.UserLive.UserRegistrationLive do
   alias Barnkeeper.Accounts
   alias Barnkeeper.Accounts.User
 
-
   def mount(_params, _session, socket) do
     changeset = Accounts.change_user_registration(%User{})
 

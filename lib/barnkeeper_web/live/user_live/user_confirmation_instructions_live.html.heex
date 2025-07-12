@@ -12,16 +12,19 @@
         We'll send a new confirmation link to your inbox
       </p>
     </div>
-
-    <!-- Resend Form -->
-    <.simple_form 
-      for={@form} 
-      id="resend_confirmation_form" 
+    
+<!-- Resend Form -->
+    <.simple_form
+      for={@form}
+      id="resend_confirmation_form"
       phx-submit="send_instructions"
       class="space-y-6"
     >
       <div>
-        <label for="user_email" class="block text-sm font-semibold leading-6 text-base-content mb-2">
+        <label
+          for="user_email"
+          class="block text-sm font-semibold leading-6 text-base-content mb-2"
+        >
           Email
         </label>
         <input
@@ -35,20 +38,20 @@
       </div>
 
       <:actions>
-        <.button 
-          phx-disable-with="Sending..." 
+        <.button
+          phx-disable-with="Sending..."
           class="w-full bg-primary hover:bg-primary/90 text-primary-content font-semibold py-3 px-4 rounded-lg transition-all shadow-lg hover:shadow-xl text-lg"
         >
           Resend confirmation instructions <span aria-hidden="true" class="ml-2">📧</span>
         </.button>
       </:actions>
     </.simple_form>
-
-    <!-- Navigation Links -->
+    
+<!-- Navigation Links -->
     <div class="text-center space-y-2">
       <p class="text-base-content/80">
         Need to create a new account?
-        <.link 
+        <.link
           href={~p"/users/register"}
           class="font-semibold text-primary hover:text-primary/80 transition-colors underline decoration-2 underline-offset-2"
         >
@@ -57,7 +60,7 @@
       </p>
       <p class="text-base-content/80">
         Remember your password?
-        <.link 
+        <.link
           href={~p"/users/log_in"}
           class="font-semibold text-primary hover:text-primary/80 transition-colors underline decoration-2 underline-offset-2"
         >

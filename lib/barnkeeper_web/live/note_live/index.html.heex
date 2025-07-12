@@ -1,11 +1,41 @@
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8">
     <div class="mb-4 sm:mb-0">
-      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Notes</h1>
-      <p class="text-sm sm:text-base text-gray-600">Manage notes for {@team.name}</p>
+      <%= if @horse_id do %>
+        <% horse = Enum.find(@horses, &(&1.id == String.to_integer(@horse_id))) %>
+        <div class="flex items-center space-x-2 mb-2">
+          <.link navigate={~p"/horses/#{@horse_id}"} class="btn btn-ghost btn-xs">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            Back to Horse
+          </.link>
+        </div>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+          Notes for {horse.name}
+        </h1>
+        <p class="text-sm sm:text-base text-gray-600">Notes for this horse</p>
+      <% else %>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Notes</h1>
+        <p class="text-sm sm:text-base text-gray-600">Manage notes for {@team.name}</p>
+      <% end %>
     </div>
     <div class="w-full sm:w-auto">
-      <.link patch={~p"/notes/new"} class="btn btn-primary w-full sm:w-auto">
+      <.link
+        patch={if @horse_id, do: ~p"/notes/new?horse_id=#{@horse_id}", else: ~p"/notes/new"}
+        class="btn btn-primary w-full sm:w-auto"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-4 w-4 sm:h-5 sm:w-5 mr-2"
@@ -99,7 +129,11 @@
         <div class="space-y-3">
           <div class="flex items-center justify-between mb-2">
             <span class="badge badge-primary badge-sm sm:badge-md">
-              {format_note_type(note.note_type)}
+              <%= if note.is_private do %>
+                Private
+              <% else %>
+                Public
+              <% end %>
             </span>
             <span class="text-xs sm:text-sm text-gray-500">
               {Calendar.strftime(note.inserted_at, "%b %d")}
@@ -163,14 +197,22 @@
       </svg>
       <h3 class="text-xl font-medium text-gray-900 mb-2">No notes yet</h3>
       <p class="text-gray-500 mb-6">Keep track of important information about your horses</p>
-      <.link patch={~p"/notes/new"} class="btn btn-primary">
+      <.link
+        patch={if @horse_id, do: ~p"/notes/new?horse_id=#{@horse_id}", else: ~p"/notes/new"}
+        class="btn btn-primary"
+      >
         Add Your First Note
       </.link>
     </div>
   <% end %>
 </div>
 
-<.modal :if={@live_action in [:new, :edit]} id="note-modal" show on_cancel={JS.patch(~p"/notes")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="note-modal"
+  show
+  on_cancel={JS.patch(if @horse_id, do: ~p"/notes?horse_id=#{@horse_id}", else: ~p"/notes")}
+>
   <.live_component
     module={BarnkeeperWeb.NoteLive.FormComponent}
     id={@note.id || :new}
@@ -180,6 +222,6 @@
     team_id={@team.id}
     horses={@horses}
     current_user_id={@current_user.id}
-    patch={~p"/notes"}
+    patch={if @horse_id, do: ~p"/notes?horse_id=#{@horse_id}", else: ~p"/notes"}
   />
 </.modal>

@@ -4,7 +4,7 @@ defmodule BarnkeeperWeb.NoteLive.Index do
   alias Barnkeeper.{Notes, Teams}
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     user = socket.assigns.current_user
 
     # Get user's team
@@ -19,11 +19,20 @@ defmodule BarnkeeperWeb.NoteLive.Index do
     if team do
       horses = Barnkeeper.Horses.list_horses(team.id)
 
+      # Filter notes by horse_id if provided
+      notes =
+        case params["horse_id"] do
+          nil -> Notes.list_notes(team.id)
+          horse_id -> Notes.list_notes(team.id, horse_id)
+        end
+
       {:ok,
        socket
        |> assign(:team, team)
        |> assign(:horses, horses)
-       |> stream(:notes, Notes.list_notes(team.id))}
+       |> assign(:horse_id, params["horse_id"])
+       |> assign(:notes_count, length(notes))
+       |> stream(:notes, notes)}
     else
       {:ok, push_navigate(socket, to: ~p"/team/setup")}
     end
@@ -42,10 +51,18 @@ defmodule BarnkeeperWeb.NoteLive.Index do
     |> assign(:note, note)
   end
 
-  defp apply_action(socket, :new, _params) do
+  defp apply_action(socket, :new, params) do
+    note = %Notes.Note{}
+    # Pre-populate horse_id if provided in params
+    note =
+      case params["horse_id"] do
+        nil -> note
+        horse_id -> %{note | horse_id: String.to_integer(horse_id)}
+      end
+
     socket
     |> assign(:page_title, "New Note")
-    |> assign(:note, %Notes.Note{})
+    |> assign(:note, note)
   end
 
   defp apply_action(socket, :index, _params) do
@@ -65,12 +82,5 @@ defmodule BarnkeeperWeb.NoteLive.Index do
     {:ok, _} = Notes.delete_note(note)
 
     {:noreply, stream_delete(socket, :notes, note)}
-  end
-
-  defp format_note_type(note_type) do
-    note_type
-    |> to_string()
-    |> String.replace("_", " ")
-    |> String.capitalize()
   end
 end

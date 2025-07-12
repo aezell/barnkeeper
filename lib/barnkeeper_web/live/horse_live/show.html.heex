@@ -204,13 +204,28 @@
         </div>
       </div>
       
-<!-- Notes -->
-      <%= if @horse.notes do %>
+<!-- Recent Notes -->
+      <%= if @recent_notes && length(@recent_notes) > 0 do %>
         <div class="card bg-base-100 shadow-lg">
           <div class="card-body">
-            <h2 class="card-title mb-4">Notes</h2>
-            <div class="prose max-w-none">
-              <p>{@horse.notes}</p>
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="card-title">Recent Notes</h2>
+              <.link navigate={~p"/notes?horse_id=#{@horse.id}"} class="btn btn-sm btn-outline">
+                View All
+              </.link>
+            </div>
+            <div class="space-y-3">
+              <%= for note <- Enum.take(@recent_notes, 3) do %>
+                <div class="border-l-4 border-primary pl-4">
+                  <div class="flex justify-between items-start mb-1">
+                    <h4 class="font-semibold text-sm">{note.title}</h4>
+                    <span class="text-xs text-gray-500">
+                      {Calendar.strftime(note.inserted_at, "%b %d")}
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-600 line-clamp-2">{note.content}</p>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
@@ -285,7 +300,10 @@
               Schedule Farrier
             </button>
 
-            <button class="btn btn-sm btn-outline btn-block justify-start" disabled>
+            <.link
+              navigate={~p"/notes?horse_id=#{@horse.id}"}
+              class="btn btn-sm btn-outline btn-block justify-start"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4 mr-2"
@@ -300,10 +318,13 @@
                   d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                 />
               </svg>
-              View Notes (Coming Soon)
-            </button>
+              View Notes
+            </.link>
 
-            <button class="btn btn-sm btn-outline btn-block justify-start" disabled>
+            <.link
+              navigate={~p"/notes/new?horse_id=#{@horse.id}"}
+              class="btn btn-sm btn-outline btn-block justify-start"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4 mr-2"
@@ -318,8 +339,8 @@
                   d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                 />
               </svg>
-              Add Note (Coming Soon)
-            </button>
+              Add Note
+            </.link>
 
             <.link
               patch={~p"/horses/#{@horse.id}/photos/upload"}

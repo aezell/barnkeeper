@@ -3,7 +3,6 @@ defmodule BarnkeeperWeb.UserLive.UserSettingsLive do
 
   alias Barnkeeper.Accounts
 
-
   def mount(%{"token" => token}, _session, socket) do
     socket =
       case Accounts.update_user_email(socket.assigns.current_user, token) do

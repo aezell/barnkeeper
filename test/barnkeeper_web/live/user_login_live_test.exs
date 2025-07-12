@@ -26,7 +26,7 @@ defmodule BarnkeeperWeb.UserLoginLiveTest do
 
   describe "user login" do
     test "redirects if user login with valid credentials", %{conn: conn} do
-      password = "123456789abcd"
+      _password = "123456789abcd"
       user = user_fixture()
 
       {:ok, lv, _html} = live(conn, ~p"/users/log_in")

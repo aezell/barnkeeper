@@ -28,7 +28,7 @@ defmodule Barnkeeper.Notes do
       join: h in assoc(n, :horse),
       where: h.team_id == ^team_id and n.horse_id == ^horse_id,
       order_by: [desc: n.inserted_at],
-      preload: :author
+      preload: [:horse, :author]
     )
     |> Repo.all()
   end

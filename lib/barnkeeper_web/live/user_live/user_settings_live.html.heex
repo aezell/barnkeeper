@@ -17,9 +17,11 @@
     <div class="space-y-6">
       <div>
         <h2 class="text-xl font-semibold text-base-content mb-2">Email Address</h2>
-        <p class="text-base-content/70 text-sm">Update your email address and we'll send a confirmation link to the new address.</p>
+        <p class="text-base-content/70 text-sm">
+          Update your email address and we'll send a confirmation link to the new address.
+        </p>
       </div>
-      
+
       <.simple_form
         for={@email_form}
         id="email_form"
@@ -29,7 +31,10 @@
       >
         <!-- Email Input -->
         <div>
-          <label for="user_email" class="block text-sm font-semibold leading-6 text-base-content mb-2">
+          <label
+            for="user_email"
+            class="block text-sm font-semibold leading-6 text-base-content mb-2"
+          >
             Email
           </label>
           <input
@@ -42,10 +47,13 @@
             placeholder="Enter your email"
           />
         </div>
-
-        <!-- Current Password for Email -->
+        
+<!-- Current Password for Email -->
         <div>
-          <label for="current_password_for_email" class="block text-sm font-semibold leading-6 text-base-content mb-2">
+          <label
+            for="current_password_for_email"
+            class="block text-sm font-semibold leading-6 text-base-content mb-2"
+          >
             Current password
           </label>
           <input
@@ -60,7 +68,7 @@
         </div>
 
         <:actions>
-          <.button 
+          <.button
             phx-disable-with="Changing..."
             class="bg-primary hover:bg-primary/90 text-primary-content font-semibold py-2 px-4 rounded-lg transition-all shadow-lg hover:shadow-xl"
           >
@@ -69,12 +77,14 @@
         </:actions>
       </.simple_form>
     </div>
-
-    <!-- Password Settings Section -->
+    
+<!-- Password Settings Section -->
     <div class="pt-12 space-y-6">
       <div>
         <h2 class="text-xl font-semibold text-base-content mb-2">Password</h2>
-        <p class="text-base-content/70 text-sm">Change your password to keep your account secure.</p>
+        <p class="text-base-content/70 text-sm">
+          Change your password to keep your account secure.
+        </p>
       </div>
 
       <.simple_form
@@ -97,7 +107,10 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <!-- New Password Input -->
           <div>
-            <label for="user_password" class="block text-sm font-semibold leading-6 text-base-content mb-2">
+            <label
+              for="user_password"
+              class="block text-sm font-semibold leading-6 text-base-content mb-2"
+            >
               New password
             </label>
             <input
@@ -109,10 +122,13 @@
               placeholder="Enter new password"
             />
           </div>
-
-          <!-- Confirm Password Input -->
+          
+<!-- Confirm Password Input -->
           <div>
-            <label for="user_password_confirmation" class="block text-sm font-semibold leading-6 text-base-content mb-2">
+            <label
+              for="user_password_confirmation"
+              class="block text-sm font-semibold leading-6 text-base-content mb-2"
+            >
               Confirm new password
             </label>
             <input
@@ -124,10 +140,13 @@
             />
           </div>
         </div>
-
-        <!-- Current Password for Password Change -->
+        
+<!-- Current Password for Password Change -->
         <div>
-          <label for="current_password_for_password" class="block text-sm font-semibold leading-6 text-base-content mb-2">
+          <label
+            for="current_password_for_password"
+            class="block text-sm font-semibold leading-6 text-base-content mb-2"
+          >
             Current password
           </label>
           <input
@@ -142,7 +161,7 @@
         </div>
 
         <:actions>
-          <.button 
+          <.button
             phx-disable-with="Changing..."
             class="bg-primary hover:bg-primary/90 text-primary-content font-semibold py-2 px-4 rounded-lg transition-all shadow-lg hover:shadow-xl"
           >

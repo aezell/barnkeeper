@@ -3,7 +3,6 @@ defmodule BarnkeeperWeb.UserLive.UserForgotPasswordLive do
 
   alias Barnkeeper.Accounts
 
-
   def mount(_params, _session, socket) do
     {:ok, assign(socket, form: to_form(%{}, as: "user"))}
   end

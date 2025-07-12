@@ -93,9 +93,9 @@ defmodule BarnkeeperWeb.HorseLiveTest do
     test "handles empty stream without errors", %{conn: conn} do
       # This test specifically ensures @horses_count == 0 works correctly
       user = user_fixture()
-      team = team_fixture(user)
+      _team = team_fixture(user)
 
-      {:ok, index_live, html} =
+      {:ok, _index_live, html} =
         conn
         |> log_in_user(user)
         |> live(~p"/horses")

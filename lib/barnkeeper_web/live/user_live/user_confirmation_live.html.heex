@@ -12,30 +12,30 @@
         Confirm your email address to activate your account
       </p>
     </div>
-
-    <!-- Confirmation Form -->
-    <.simple_form 
-      for={@form} 
-      id="confirmation_form" 
+    
+<!-- Confirmation Form -->
+    <.simple_form
+      for={@form}
+      id="confirmation_form"
       phx-submit="confirm_account"
       class="space-y-6"
     >
       <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
       <:actions>
-        <.button 
-          phx-disable-with="Confirming..." 
+        <.button
+          phx-disable-with="Confirming..."
           class="w-full bg-primary hover:bg-primary/90 text-primary-content font-semibold py-3 px-4 rounded-lg transition-all shadow-lg hover:shadow-xl text-lg"
         >
           Confirm my account <span aria-hidden="true" class="ml-2">→</span>
         </.button>
       </:actions>
     </.simple_form>
-
-    <!-- Navigation Links -->
+    
+<!-- Navigation Links -->
     <div class="text-center space-y-2">
       <p class="text-base-content/80">
         Need to create a new account?
-        <.link 
+        <.link
           href={~p"/users/register"}
           class="font-semibold text-primary hover:text-primary/80 transition-colors underline decoration-2 underline-offset-2"
         >
@@ -44,7 +44,7 @@
       </p>
       <p class="text-base-content/80">
         Already have an account?
-        <.link 
+        <.link
           href={~p"/users/log_in"}
           class="font-semibold text-primary hover:text-primary/80 transition-colors underline decoration-2 underline-offset-2"
         >

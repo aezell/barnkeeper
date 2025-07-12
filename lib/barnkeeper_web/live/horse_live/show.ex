@@ -1,7 +1,7 @@
 defmodule BarnkeeperWeb.HorseLive.Show do
   use BarnkeeperWeb, :live_view
 
-  alias Barnkeeper.{Horses, Teams, Media}
+  alias Barnkeeper.{Horses, Teams, Media, Notes}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -27,6 +27,7 @@ defmodule BarnkeeperWeb.HorseLive.Show do
   def handle_params(%{"id" => id}, _, socket) do
     horse = Horses.get_horse!(socket.assigns.team.id, id)
     photos = Media.list_photos(socket.assigns.team.id, horse.id)
+    recent_notes = Notes.list_notes(socket.assigns.team.id, horse.id) |> Enum.take(3)
 
     live_action = socket.assigns[:live_action] || :show
 
@@ -42,6 +43,7 @@ defmodule BarnkeeperWeb.HorseLive.Show do
      |> assign(:page_title, page_title)
      |> assign(:horse, horse)
      |> assign(:photos, photos)
+     |> assign(:recent_notes, recent_notes)
      |> assign(:live_action, live_action)}
   end
 

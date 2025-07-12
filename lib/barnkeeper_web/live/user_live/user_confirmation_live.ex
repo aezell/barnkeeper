@@ -3,7 +3,6 @@ defmodule BarnkeeperWeb.UserLive.UserConfirmationLive do
 
   alias Barnkeeper.Accounts
 
-
   def mount(%{"token" => token}, _session, socket) do
     form = to_form(%{"token" => token}, as: "user")
     {:ok, assign(socket, form: form), temporary_assigns: [form: nil]}
