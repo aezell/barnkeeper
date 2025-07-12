@@ -105,7 +105,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Safety Guidelines:**
 - NEVER run `mix ecto.reset` without explicit permission
-- NEVER perform destructive database operations in development
 - Always use UTC datetime for new timestamp fields
 - Ensure authentication on all protected routes
 - Validate file uploads for security
