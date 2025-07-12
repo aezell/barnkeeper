@@ -52,10 +52,10 @@ defmodule BarnkeeperWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{BarnkeeperWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/users/register", UserRegistrationLive, :new
-      live "/users/log_in", UserLoginLive, :new
-      live "/users/reset_password", UserForgotPasswordLive, :new
-      live "/users/reset_password/:token", UserResetPasswordLive, :edit
+      live "/users/register", UserLive.UserRegistrationLive, :new
+      live "/users/log_in", UserLive.UserLoginLive, :new
+      live "/users/reset_password", UserLive.UserForgotPasswordLive, :new
+      live "/users/reset_password/:token", UserLive.UserResetPasswordLive, :edit
     end
 
     post "/users/log_in", UserSessionController, :create
@@ -117,8 +117,8 @@ defmodule BarnkeeperWeb.Router do
       live "/team/setup", TeamSetupLive, :index
 
       # User settings
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/users/settings", UserLive.UserSettingsLive, :edit
+      live "/users/settings/confirm_email/:token", UserLive.UserSettingsLive, :confirm_email
     end
   end
 
@@ -129,8 +129,8 @@ defmodule BarnkeeperWeb.Router do
 
     live_session :current_user,
       on_mount: [{BarnkeeperWeb.UserAuth, :mount_current_user}] do
-      live "/users/confirm/:token", UserConfirmationLive, :edit
-      live "/users/confirm", UserConfirmationInstructionsLive, :new
+      live "/users/confirm/:token", UserLive.UserConfirmationLive, :edit
+      live "/users/confirm", UserLive.UserConfirmationInstructionsLive, :new
     end
   end
 end
