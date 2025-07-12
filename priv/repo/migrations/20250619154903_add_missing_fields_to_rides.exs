@@ -6,7 +6,7 @@ defmodule Barnkeeper.Repo.Migrations.AddMissingFieldsToRides do
     alter table(:rides) do
       add :status, :string, null: false, default: "scheduled"
       add :rider_name, :string
-      add :instructor_name, :string  
+      add :instructor_name, :string
       add :discipline, :string
       add :goals, :string
       add :completed_at, :utc_datetime

@@ -1,4 +1,4 @@
-<div class="navbar bg-base-100 border-b border-base-200 px-4 sm:px-6 lg:px-8">
+<div class="navbar bg-base-100 border-b border-base-300 shadow-sm px-4 sm:px-6 lg:px-8">
   <div class="navbar-start">
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
@@ -20,26 +20,71 @@
       </div>
       <ul
         tabindex="0"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow-warm border border-base-300"
       >
         <%= if @current_user do %>
-          <li><.link href={~p"/dashboard"}>Dashboard</.link></li>
-          <li><.link href={~p"/horses"}>Horses</.link></li>
-          <li><.link href={~p"/calendar"}>Calendar</.link></li>
+          <li>
+            <.link
+              href={~p"/dashboard"}
+              class="rounded-lg hover:bg-primary hover:text-primary-content transition-colors"
+            >
+              Dashboard
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/horses"}
+              class="rounded-lg hover:bg-primary hover:text-primary-content transition-colors"
+            >
+              Horses
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/calendar"}
+              class="rounded-lg hover:bg-primary hover:text-primary-content transition-colors"
+            >
+              Calendar
+            </.link>
+          </li>
         <% end %>
       </ul>
     </div>
-    <.link href="/" class="btn btn-ghost text-xl font-bold">
-      🐴 Barnkeeper
+    <.link
+      href="/"
+      class="btn btn-ghost text-xl font-bold text-primary hover:bg-primary hover:text-primary-content transition-colors"
+    >
+      🐴 <span class="font-display">Barnkeeper</span>
     </.link>
   </div>
 
   <div class="navbar-center hidden lg:flex">
     <%= if @current_user do %>
-      <ul class="menu menu-horizontal px-1">
-        <li><.link href={~p"/dashboard"} class="btn btn-ghost">Dashboard</.link></li>
-        <li><.link href={~p"/horses"} class="btn btn-ghost">Horses</.link></li>
-        <li><.link href={~p"/calendar"} class="btn btn-ghost">Calendar</.link></li>
+      <ul class="menu menu-horizontal px-1 gap-2">
+        <li>
+          <.link
+            href={~p"/dashboard"}
+            class="btn btn-ghost hover:bg-primary hover:text-primary-content transition-colors rounded-lg"
+          >
+            Dashboard
+          </.link>
+        </li>
+        <li>
+          <.link
+            href={~p"/horses"}
+            class="btn btn-ghost hover:bg-primary hover:text-primary-content transition-colors rounded-lg"
+          >
+            Horses
+          </.link>
+        </li>
+        <li>
+          <.link
+            href={~p"/calendar"}
+            class="btn btn-ghost hover:bg-primary hover:text-primary-content transition-colors rounded-lg"
+          >
+            Calendar
+          </.link>
+        </li>
       </ul>
     <% end %>
   </div>
@@ -49,39 +94,56 @@
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full">
-            <div class="bg-primary text-primary-content w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium">
+            <div class="bg-gradient-hero text-primary-content w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium shadow-md">
               {String.first(@current_user.email) |> String.upcase()}
             </div>
           </div>
         </div>
         <ul
           tabindex="0"
-          class="dropdown-content menu bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          class="dropdown-content menu bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow-warm border border-base-300"
         >
           <li class="menu-title">
-            <span class="text-xs text-base-content/70">{@current_user.email}</span>
+            <span class="text-xs text-base-content/70 font-medium">{@current_user.email}</span>
           </li>
-          <li><.link href={~p"/users/settings"}>Settings</.link></li>
           <li>
-            <.link href={~p"/users/log_out"} method="delete">
+            <.link
+              href={~p"/users/settings"}
+              class="rounded-lg hover:bg-primary hover:text-primary-content transition-colors"
+            >
+              Settings
+            </.link>
+          </li>
+          <li>
+            <.link
+              href={~p"/users/log_out"}
+              method="delete"
+              class="rounded-lg hover:bg-error hover:text-error-content transition-colors"
+            >
               Log out
             </.link>
           </li>
         </ul>
       </div>
     <% else %>
-      <div class="flex gap-2">
-        <.link href={~p"/users/log_in"} class="btn btn-ghost">
+      <div class="flex gap-3">
+        <.link
+          href={~p"/users/log_in"}
+          class="btn btn-ghost hover:bg-primary hover:text-primary-content transition-colors rounded-lg"
+        >
           Log in
         </.link>
-        <.link href={~p"/users/register"} class="btn btn-primary">
+        <.link
+          href={~p"/users/register"}
+          class="btn btn-primary shadow-barn hover:shadow-warm transition-all"
+        >
           Register
         </.link>
       </div>
     <% end %>
   </div>
 </div>
-<main class="min-h-screen bg-base-200">
+<main class="min-h-screen bg-gradient-barn">
   <div class="container mx-auto px-4 py-8">
     <.flash_group flash={@flash} />
     {@inner_content}

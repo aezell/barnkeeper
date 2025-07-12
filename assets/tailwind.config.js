@@ -11,15 +11,66 @@ module.exports = {
     "../lib/barnkeeper_web.ex",
     "../lib/barnkeeper_web/**/*.*ex"
   ],
+  daisyui: {
+    themes: [
+      {
+        barnkeeper: {
+          "primary": "#8B4513",        // Saddle brown - warm, earthy
+          "primary-content": "#FFFFFF",
+          "secondary": "#D2691E",      // Chocolate - complementary brown
+          "secondary-content": "#FFFFFF",
+          "accent": "#DAA520",         // Goldenrod - hint of luxury
+          "accent-content": "#000000",
+          "neutral": "#4A4A4A",        // Charcoal gray
+          "neutral-content": "#FFFFFF",
+          "base-100": "#FEFEFE",       // Off-white background
+          "base-200": "#F8F6F3",       // Warm cream
+          "base-300": "#F0EDE8",       // Light beige
+          "base-content": "#2C2C2C",   // Dark gray text
+          "info": "#3ABFF8",
+          "info-content": "#FFFFFF",
+          "success": "#36D399",
+          "success-content": "#FFFFFF",
+          "warning": "#FBBD23",
+          "warning-content": "#000000",
+          "error": "#F87272",
+          "error-content": "#FFFFFF",
+        },
+      },
+    ],
+  },
   theme: {
     extend: {
       colors: {
-        brand: "#FD4F00",
+        brand: "#8B4513",
+        "barn-brown": "#8B4513",
+        "leather": "#D2691E",
+        "hay": "#DAA520",
+        "cream": "#F8F6F3",
+        "parchment": "#F0EDE8",
+      },
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Playfair Display', 'serif'],
+      },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      },
+      backgroundImage: {
+        'gradient-barn': 'linear-gradient(135deg, #F8F6F3 0%, #F0EDE8 50%, #E8E2DB 100%)',
+        'gradient-hero': 'linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%)',
+      },
+      boxShadow: {
+        'barn': '0 4px 20px -2px rgba(139, 69, 19, 0.1)',
+        'warm': '0 8px 30px -4px rgba(139, 69, 19, 0.2)',
       }
     },
   },
   plugins: [
     require("@tailwindcss/forms"),
+    require("daisyui"),
     // Allows prefixing tailwind classes with LiveView classes to add rules
     // only when LiveView classes are applied, for example:
     //

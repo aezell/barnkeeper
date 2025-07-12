@@ -1,23 +1,30 @@
 <.flash_group flash={@flash} />
 
 <!-- Hero Section -->
-<div class="hero py-20 bg-gradient-to-br from-base-200 to-base-300">
-  <div class="hero-content text-center">
-    <div class="max-w-4xl">
-      <h1 class="text-5xl md:text-6xl font-bold mb-6">
-        🐴 <span class="text-primary">Barnkeeper</span>
+<div class="hero py-24 md:py-32 bg-gradient-hero relative overflow-hidden">
+  <!-- Decorative elements -->
+  <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:60px_60px]">
+  </div>
+
+  <div class="hero-content text-center relative z-10">
+    <div class="max-w-5xl">
+      <h1 class="text-5xl md:text-7xl font-display font-bold mb-8 text-white">
+        🐴 <span class="text-hay">Barnkeeper</span>
       </h1>
-      <p class="text-xl md:text-2xl font-semibold mb-4 text-gray-700">
+      <p class="text-xl md:text-3xl font-semibold mb-6 text-white/90 leading-relaxed">
         The complete horse management solution for your barn
       </p>
-      <p class="text-base md:text-lg mb-8 text-gray-600 max-w-2xl mx-auto">
+      <p class="text-base md:text-xl mb-10 text-white/80 max-w-3xl mx-auto leading-relaxed">
         Track your horses, schedule activities, manage veterinary visits, and keep your entire team organized.
         Whether you're running a boarding facility, training stable, or managing your personal horses,
         Barnkeeper keeps everything in one place.
       </p>
 
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <.link href={~p"/users/register"} class="btn btn-primary btn-lg">
+        <.link
+          href={~p"/users/register"}
+          class="btn btn-accent btn-lg shadow-warm hover:shadow-xl transition-all text-lg px-8 py-4"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6 mr-2"
@@ -34,7 +41,10 @@
           </svg>
           Get Started Free
         </.link>
-        <.link href={~p"/users/log_in"} class="btn btn-outline btn-lg">
+        <.link
+          href={~p"/users/log_in"}
+          class="btn btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary transition-all text-lg px-8 py-4"
+        >
           Sign In
         </.link>
       </div>
@@ -43,21 +53,23 @@
 </div>
 
 <!-- Features Section -->
-<div class="py-16 bg-base-100">
+<div class="py-20 bg-base-100 relative">
   <div class="container mx-auto px-4">
-    <div class="text-center mb-12">
-      <h2 class="text-4xl font-bold mb-4">Everything you need to manage your horses</h2>
-      <p class="text-xl text-gray-600">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 text-base-content">
+        Everything you need to manage your horses
+      </h2>
+      <p class="text-xl md:text-2xl text-base-content/70 max-w-3xl mx-auto leading-relaxed">
         Comprehensive tools designed for horse owners, trainers, and barn managers
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
       <!-- Horse Management -->
-      <div class="card bg-base-100 shadow-lg">
-        <div class="card-body">
-          <div class="flex items-center mb-4">
-            <div class="bg-primary text-primary-content rounded-full p-3 mr-4">
+      <div class="card bg-base-100 shadow-barn hover:shadow-warm transition-all duration-300 border border-base-300 hover:border-primary/20">
+        <div class="card-body p-8">
+          <div class="flex items-center mb-6">
+            <div class="bg-gradient-hero text-primary-content rounded-xl p-4 mr-4 shadow-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-8 w-8"
@@ -73,9 +85,9 @@
                 />
               </svg>
             </div>
-            <h3 class="card-title">Horse Profiles</h3>
+            <h3 class="text-xl font-semibold text-base-content">Horse Profiles</h3>
           </div>
-          <p class="text-gray-600">
+          <p class="text-base-content/70 leading-relaxed">
             Complete profiles for each horse including breed, color, medical history, and detailed notes.
             Keep track of everything that matters.
           </p>
@@ -83,10 +95,10 @@
       </div>
       
 <!-- Activity Tracking -->
-      <div class="card bg-base-100 shadow-lg">
-        <div class="card-body">
-          <div class="flex items-center mb-4">
-            <div class="bg-secondary text-secondary-content rounded-full p-3 mr-4">
+      <div class="card bg-base-100 shadow-barn hover:shadow-warm transition-all duration-300 border border-base-300 hover:border-primary/20">
+        <div class="card-body p-8">
+          <div class="flex items-center mb-6">
+            <div class="bg-secondary text-secondary-content rounded-xl p-4 mr-4 shadow-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-8 w-8"
@@ -102,9 +114,9 @@
                 />
               </svg>
             </div>
-            <h3 class="card-title">Activity Scheduling</h3>
+            <h3 class="text-xl font-semibold text-base-content">Activity Scheduling</h3>
           </div>
-          <p class="text-gray-600">
+          <p class="text-base-content/70 leading-relaxed">
             Schedule rides, training sessions, vet visits, and farrier appointments.
             Never miss an important date with our calendar system.
           </p>
@@ -112,10 +124,10 @@
       </div>
       
 <!-- Team Management -->
-      <div class="card bg-base-100 shadow-lg">
-        <div class="card-body">
-          <div class="flex items-center mb-4">
-            <div class="bg-accent text-accent-content rounded-full p-3 mr-4">
+      <div class="card bg-base-100 shadow-barn hover:shadow-warm transition-all duration-300 border border-base-300 hover:border-primary/20">
+        <div class="card-body p-8">
+          <div class="flex items-center mb-6">
+            <div class="bg-accent text-accent-content rounded-xl p-4 mr-4 shadow-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-8 w-8"
@@ -131,9 +143,9 @@
                 />
               </svg>
             </div>
-            <h3 class="card-title">Team Collaboration</h3>
+            <h3 class="text-xl font-semibold text-base-content">Team Collaboration</h3>
           </div>
-          <p class="text-gray-600">
+          <p class="text-base-content/70 leading-relaxed">
             Share access with trainers, veterinarians, and staff.
             Keep everyone informed with role-based permissions.
           </p>
@@ -141,10 +153,10 @@
       </div>
       
 <!-- Medical Records -->
-      <div class="card bg-base-100 shadow-lg">
-        <div class="card-body">
-          <div class="flex items-center mb-4">
-            <div class="bg-info text-info-content rounded-full p-3 mr-4">
+      <div class="card bg-base-100 shadow-barn hover:shadow-warm transition-all duration-300 border border-base-300 hover:border-primary/20">
+        <div class="card-body p-8">
+          <div class="flex items-center mb-6">
+            <div class="bg-info text-info-content rounded-xl p-4 mr-4 shadow-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-8 w-8"
@@ -160,9 +172,9 @@
                 />
               </svg>
             </div>
-            <h3 class="card-title">Health Records</h3>
+            <h3 class="text-xl font-semibold text-base-content">Health Records</h3>
           </div>
-          <p class="text-gray-600">
+          <p class="text-base-content/70 leading-relaxed">
             Track vaccinations, medical treatments, and health notes.
             Digital records you can access anywhere, anytime.
           </p>
@@ -170,10 +182,10 @@
       </div>
       
 <!-- Photo Management -->
-      <div class="card bg-base-100 shadow-lg">
-        <div class="card-body">
-          <div class="flex items-center mb-4">
-            <div class="bg-warning text-warning-content rounded-full p-3 mr-4">
+      <div class="card bg-base-100 shadow-barn hover:shadow-warm transition-all duration-300 border border-base-300 hover:border-primary/20">
+        <div class="card-body p-8">
+          <div class="flex items-center mb-6">
+            <div class="bg-warning text-warning-content rounded-xl p-4 mr-4 shadow-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-8 w-8"
@@ -189,9 +201,9 @@
                 />
               </svg>
             </div>
-            <h3 class="card-title">Photo Albums</h3>
+            <h3 class="text-xl font-semibold text-base-content">Photo Albums</h3>
           </div>
-          <p class="text-gray-600">
+          <p class="text-base-content/70 leading-relaxed">
             Create beautiful photo albums for each horse.
             Document progress, achievements, and special moments.
           </p>
@@ -199,10 +211,10 @@
       </div>
       
 <!-- Feeding Schedules -->
-      <div class="card bg-base-100 shadow-lg">
-        <div class="card-body">
-          <div class="flex items-center mb-4">
-            <div class="bg-success text-success-content rounded-full p-3 mr-4">
+      <div class="card bg-base-100 shadow-barn hover:shadow-warm transition-all duration-300 border border-base-300 hover:border-primary/20">
+        <div class="card-body p-8">
+          <div class="flex items-center mb-6">
+            <div class="bg-success text-success-content rounded-xl p-4 mr-4 shadow-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-8 w-8"
@@ -218,9 +230,9 @@
                 />
               </svg>
             </div>
-            <h3 class="card-title">Care Tracking</h3>
+            <h3 class="text-xl font-semibold text-base-content">Care Tracking</h3>
           </div>
-          <p class="text-gray-600">
+          <p class="text-base-content/70 leading-relaxed">
             Monitor feeding schedules, track daily care tasks, and ensure
             consistent care routines for optimal horse health.
           </p>
@@ -231,13 +243,20 @@
 </div>
 
 <!-- CTA Section -->
-<div class="py-16 bg-primary text-primary-content">
-  <div class="container mx-auto px-4 text-center">
-    <h2 class="text-4xl font-bold mb-4">Ready to get organized?</h2>
-    <p class="text-xl mb-8 opacity-90">
+<div class="py-20 bg-gradient-hero text-white relative overflow-hidden">
+  <!-- Background pattern -->
+  <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:40px_40px]">
+  </div>
+
+  <div class="container mx-auto px-4 text-center relative z-10">
+    <h2 class="text-4xl md:text-5xl font-display font-bold mb-6">Ready to get organized?</h2>
+    <p class="text-xl md:text-2xl mb-10 opacity-90 max-w-3xl mx-auto leading-relaxed">
       Join horse owners and barn managers who trust Barnkeeper to keep their operations running smoothly.
     </p>
-    <.link href={~p"/users/register"} class="btn btn-neutral btn-lg">
+    <.link
+      href={~p"/users/register"}
+      class="btn btn-accent btn-lg shadow-warm hover:shadow-xl transition-all text-lg px-8 py-4"
+    >
       Start Your Free Account
     </.link>
   </div>
