@@ -11,7 +11,10 @@ defmodule Barnkeeper.Horses do
   Returns the list of horses for a team.
   """
   def list_horses(team_id) do
+    primary_photos_query = from(p in Barnkeeper.Media.Photo, where: p.is_primary == true)
+
     from(h in Horse, where: h.team_id == ^team_id)
+    |> preload(photos: ^primary_photos_query)
     |> Repo.all()
   end
 

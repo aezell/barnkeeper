@@ -37,11 +37,23 @@
     >
       <div class="card-body p-4 sm:p-6">
         <div class="flex items-start justify-between mb-4">
-          <div class="avatar placeholder">
-            <div class="bg-neutral text-neutral-content rounded-full w-12 sm:w-16">
-              <span class="text-lg sm:text-xl">{String.first(horse.name)}</span>
+          <%= if primary_photo = Enum.find(horse.photos, & &1.is_primary) do %>
+            <div class="avatar">
+              <div class="w-12 sm:w-16 rounded-full">
+                <img
+                  src={primary_photo.url}
+                  alt={"#{horse.name} profile photo"}
+                  class="rounded-full object-cover"
+                />
+              </div>
             </div>
-          </div>
+          <% else %>
+            <div class="avatar placeholder">
+              <div class="bg-neutral text-neutral-content rounded-full w-12 sm:w-16">
+                <span class="text-lg sm:text-xl">{String.first(horse.name)}</span>
+              </div>
+            </div>
+          <% end %>
           <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-xs sm:btn-sm">
               <svg
