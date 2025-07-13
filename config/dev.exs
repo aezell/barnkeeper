@@ -1,5 +1,18 @@
 import Config
 
+# Load environment variables from .env file in development
+if File.exists?(".env") do
+  ".env"
+  |> File.read!()
+  |> String.split("\n", trim: true)
+  |> Enum.each(fn line ->
+    case String.split(line, "=", parts: 2) do
+      [key, value] -> System.put_env(key, value)
+      _ -> :ok
+    end
+  end)
+end
+
 # Configure your database
 config :barnkeeper, Barnkeeper.Repo,
   username: "postgres",
@@ -83,3 +96,20 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+# S3 configuration for development
+# You can override these with environment variables
+config :barnkeeper,
+  s3_bucket: System.get_env("S3_BUCKET_NAME", "barnkeeper-photos-dev"),
+  s3_region: System.get_env("AWS_REGION", "us-east-1")
+
+# ExAws configuration for development
+config :ex_aws,
+  access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
+  secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
+  region: System.get_env("AWS_REGION", "us-east-1")
+
+config :ex_aws, :s3,
+  scheme: "https://",
+  host: "s3.amazonaws.com",
+  region: System.get_env("AWS_REGION", "us-east-1")

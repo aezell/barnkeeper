@@ -5,6 +5,7 @@ defmodule BarnkeeperWeb.HorseLive.PhotoUploadComponent do
   use BarnkeeperWeb, :live_component
 
   alias Barnkeeper.Media
+  alias Barnkeeper.Media.S3Uploader
 
   @impl true
   def mount(socket) do
@@ -167,45 +168,64 @@ defmodule BarnkeeperWeb.HorseLive.PhotoUploadComponent do
     current_user = socket.assigns.current_user
 
     uploaded_files =
-      consume_uploaded_entries(socket, :photos, fn %{path: _path}, entry ->
-        # In a real implementation, you would upload to Supabase or S3
-        # For now, we'll simulate file storage
-        filename = "#{System.unique_integer()}_#{entry.client_name}"
-        file_url = "/uploads/#{filename}"
+      consume_uploaded_entries(socket, :photos, fn %{path: path}, entry ->
+        # Generate unique S3 key
+        s3_key = S3Uploader.generate_key(horse.id, entry.client_name)
 
-        # Create photo record
-        photo_attrs = %{
-          filename: filename,
-          original_filename: entry.client_name,
-          content_type: entry.client_type,
-          file_size: entry.client_size,
-          url: file_url,
-          horse_id: horse.id,
-          uploaded_by_id: current_user.id
-        }
+        # Upload to S3
+        case S3Uploader.upload_file(path, s3_key, entry.client_type) do
+          {:ok, s3_url} ->
+            # Create photo record with S3 URL
+            photo_attrs = %{
+              filename: s3_key,
+              original_filename: entry.client_name,
+              content_type: entry.client_type,
+              file_size: entry.client_size,
+              url: s3_url,
+              horse_id: horse.id,
+              uploaded_by_id: current_user.id
+            }
 
-        case Media.create_photo(photo_attrs) do
-          {:ok, photo} -> {:ok, photo}
-          {:error, _changeset} -> {:error, "Failed to save photo record"}
+            case Media.create_photo(photo_attrs) do
+              {:ok, photo} -> photo
+              {:error, _changeset} -> {:error, "Failed to save photo record"}
+            end
+
+          {:error, reason} ->
+            {:error, "S3 upload failed: #{inspect(reason)}"}
         end
       end)
 
-    case uploaded_files do
-      [{:ok, _photo} | _] = results ->
-        successful_uploads = Enum.count(results, &match?({:ok, _}, &1))
-        send(self(), {:photos_uploaded, successful_uploads})
+    # Handle the results - uploaded_files is a list of either Photo struct or {:error, reason}
+    successful_uploads =
+      Enum.count(uploaded_files, fn
+        %Barnkeeper.Media.Photo{} -> true
+        _ -> false
+      end)
+
+    failed_uploads = Enum.count(uploaded_files, &match?({:error, _}, &1))
+
+    cond do
+      successful_uploads > 0 and failed_uploads == 0 ->
+        notify_parent({:uploaded, successful_uploads})
+        {:noreply, socket}
+
+      successful_uploads > 0 and failed_uploads > 0 ->
+        notify_parent({:uploaded, successful_uploads})
+        {:noreply, socket}
+
+      failed_uploads > 0 ->
+        error_messages =
+          uploaded_files
+          |> Enum.filter(&match?({:error, _}, &1))
+          |> Enum.map(fn {:error, msg} -> msg end)
+          |> Enum.join(", ")
 
         {:noreply,
          socket
-         |> put_flash(:info, "#{successful_uploads} photo(s) uploaded successfully!")
-         |> push_patch(to: socket.assigns.patch)}
+         |> put_flash(:error, "Upload failed: #{error_messages}")}
 
-      [{:error, error} | _] ->
-        {:noreply,
-         socket
-         |> put_flash(:error, "Upload failed: #{error}")}
-
-      [] ->
+      true ->
         {:noreply,
          socket
          |> put_flash(:error, "No files selected for upload")}
@@ -234,4 +254,6 @@ defmodule BarnkeeperWeb.HorseLive.PhotoUploadComponent do
   defp error_to_string(:too_many_files), do: "Too many files"
   defp error_to_string(:not_accepted), do: "File type not accepted"
   defp error_to_string(error), do: "Upload error: #{inspect(error)}"
+
+  defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 end

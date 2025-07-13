@@ -6,6 +6,7 @@ defmodule Barnkeeper.Media do
   import Ecto.Query, warn: false
   alias Barnkeeper.Repo
   alias Barnkeeper.Media.Photo
+  alias Barnkeeper.Media.S3Uploader
 
   @doc """
   Returns the list of photos for a horse.
@@ -52,6 +53,16 @@ defmodule Barnkeeper.Media do
   Deletes a photo.
   """
   def delete_photo(%Photo{} = photo) do
+    # Delete from S3 first
+    if String.contains?(photo.url, "amazonaws.com") do
+      case S3Uploader.extract_key_from_url(photo.url) do
+        # Skip S3 deletion if we can't extract the key
+        nil -> :ok
+        key -> S3Uploader.delete_file(key)
+      end
+    end
+
+    # Delete from database
     Repo.delete(photo)
   end
 

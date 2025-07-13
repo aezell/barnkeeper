@@ -53,13 +53,15 @@ defmodule BarnkeeperWeb.HorseLive.Show do
   end
 
   @impl true
-  def handle_info({:photos_uploaded, count}, socket) do
+  def handle_info({BarnkeeperWeb.HorseLive.PhotoUploadComponent, {:uploaded, count}}, socket) do
     photos = Media.list_photos(socket.assigns.team.id, socket.assigns.horse.id)
 
     {:noreply,
      socket
      |> assign(:photos, photos)
-     |> put_flash(:info, "#{count} photo(s) uploaded successfully!")}
+     |> assign(:live_action, :show)
+     |> put_flash(:info, "#{count} photo(s) uploaded successfully!")
+     |> push_patch(to: ~p"/horses/#{socket.assigns.horse.id}")}
   end
 
   @impl true
