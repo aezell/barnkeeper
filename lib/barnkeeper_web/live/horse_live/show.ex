@@ -27,6 +27,7 @@ defmodule BarnkeeperWeb.HorseLive.Show do
   def handle_params(%{"id" => id}, _, socket) do
     horse = Horses.get_horse!(socket.assigns.team.id, id)
     photos = Media.list_photos(socket.assigns.team.id, horse.id)
+    primary_photo = Enum.find(photos, & &1.is_primary)
     recent_notes = Notes.list_notes(socket.assigns.team.id, horse.id) |> Enum.take(3)
 
     live_action = socket.assigns[:live_action] || :show
@@ -43,6 +44,7 @@ defmodule BarnkeeperWeb.HorseLive.Show do
      |> assign(:page_title, page_title)
      |> assign(:horse, horse)
      |> assign(:photos, photos)
+     |> assign(:primary_photo, primary_photo)
      |> assign(:recent_notes, recent_notes)
      |> assign(:live_action, live_action)}
   end
@@ -55,10 +57,12 @@ defmodule BarnkeeperWeb.HorseLive.Show do
   @impl true
   def handle_info({BarnkeeperWeb.HorseLive.PhotoUploadComponent, {:uploaded, count}}, socket) do
     photos = Media.list_photos(socket.assigns.team.id, socket.assigns.horse.id)
+    primary_photo = Enum.find(photos, & &1.is_primary)
 
     {:noreply,
      socket
      |> assign(:photos, photos)
+     |> assign(:primary_photo, primary_photo)
      |> assign(:live_action, :show)
      |> put_flash(:info, "#{count} photo(s) uploaded successfully!")
      |> push_patch(to: ~p"/horses/#{socket.assigns.horse.id}")}
@@ -67,7 +71,8 @@ defmodule BarnkeeperWeb.HorseLive.Show do
   @impl true
   def handle_info(:refresh_photos, socket) do
     photos = Media.list_photos(socket.assigns.team.id, socket.assigns.horse.id)
-    {:noreply, assign(socket, :photos, photos)}
+    primary_photo = Enum.find(photos, & &1.is_primary)
+    {:noreply, socket |> assign(:photos, photos) |> assign(:primary_photo, primary_photo)}
   end
 
   @impl true

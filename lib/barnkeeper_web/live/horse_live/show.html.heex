@@ -1,24 +1,36 @@
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-  <!-- Header -->
+  <!-- Back Navigation -->
+  <div class="mb-4">
+    <.link
+      navigate={~p"/horses"}
+      class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4 mr-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to Horses
+    </.link>
+  </div>
+  
+<!-- Header -->
   <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-6 sm:mb-8">
-    <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-      <.link navigate={~p"/horses"} class="btn btn-ghost btn-xs sm:btn-sm self-start">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 mr-2"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M15 19l-7-7 7-7"
+    <div class="flex items-center space-x-4">
+      <%= if @primary_photo do %>
+        <div class="flex-shrink-0">
+          <img
+            src={@primary_photo.url}
+            alt={"#{@horse.name} profile photo"}
+            class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full object-cover border-2 border-gray-200 shadow-sm"
           />
-        </svg>
-        Back to Horses
-      </.link>
+        </div>
+      <% end %>
+
       <div>
         <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">{@horse.name}</h1>
         <p class="text-sm sm:text-base text-gray-600">{@horse.breed} • {@horse.color}</p>
