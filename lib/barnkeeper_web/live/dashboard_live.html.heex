@@ -132,11 +132,23 @@
             <div class="space-y-3 sm:space-y-4">
               <%= for horse <- Enum.take(@horses, 5) do %>
                 <div class="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 border border-base-300 rounded-lg hover:bg-base-200 transition-colors">
-                  <div class="avatar placeholder flex-shrink-0">
-                    <div class="bg-neutral text-neutral-content rounded-full w-10 sm:w-12">
-                      <span class="text-xs sm:text-sm">{String.first(horse.name)}</span>
+                  <%= if primary_photo = Enum.find(horse.photos, & &1.is_primary) do %>
+                    <div class="avatar flex-shrink-0">
+                      <div class="w-10 sm:w-12 rounded-full">
+                        <img
+                          src={primary_photo.url}
+                          alt={"#{horse.name} profile photo"}
+                          class="rounded-full object-cover"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  <% else %>
+                    <div class="avatar placeholder flex-shrink-0">
+                      <div class="bg-neutral text-neutral-content rounded-full w-10 sm:w-12">
+                        <span class="text-xs sm:text-sm">{String.first(horse.name)}</span>
+                      </div>
+                    </div>
+                  <% end %>
                   <div class="flex-1 min-w-0">
                     <h3 class="font-medium text-sm sm:text-base truncate">{horse.name}</h3>
                     <p class="text-xs sm:text-sm text-gray-500 truncate">
